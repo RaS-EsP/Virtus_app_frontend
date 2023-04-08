@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Home } from "./components/home";
+import React from "react";
+import { Login } from "./components/trainer/login";
+import { Signup } from "./components/trainer/signup";
+import { ErrorPage } from "./components/error_page/error-page";
+import { Header } from "./components/header/header";
+import { ClientsByTrainer } from "./components/trainer/clients";
+import { Logout } from "./components/Logout";
+import { CreatingHash } from "./components/trainer/creatingHash";
+import { SignUpClient } from "./components/client/signup_client";
 
-function App() {
+export const App = () => {
+  const token = window.localStorage.getItem("token");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Header />
+      <Routes>
+        <Route
+          path="/trainer/signup"
+          element={token ? <Login /> : <Signup />}
+        />
+        <Route path="/trainer/login" element={token ? <Home /> : <Login />} />
+        <Route
+          path="/"
+          element={token ? <Home /> : <Login />}
+          errorElement={<ErrorPage />}
+        />
+        <Route
+          path="/trainer/clients"
+          element={<ClientsByTrainer token={token} />}
+        />
+        <Route
+          path="client_invitation"
+          element={<CreatingHash token={token} />}
+        />
+        <Route path="client/signup/:code" element={<SignUpClient />} />
+        <Route path="/logout" element={<Logout token={token} />} />
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </Router>
   );
-}
-
-export default App;
+};
