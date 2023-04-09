@@ -9,6 +9,7 @@ import { ClientsByTrainer } from "./components/trainer/clients";
 import { Logout } from "./components/Logout";
 import { CreatingHash } from "./components/trainer/creatingHash";
 import { SignUpClient } from "./components/client/signup_client";
+import { Login_client } from "./components/client/login_client";
 
 export const App = () => {
   const token = window.localStorage.getItem("token");
@@ -35,6 +36,7 @@ export const App = () => {
           path="client_invitation"
           element={<CreatingHash token={token} />}
         />
+        <Route path="client/login" element={<Login_client />} />
         <Route path="client/signup/:code" element={<SignUpClient />} />
         <Route path="/logout" element={<Logout token={token} />} />
         <Route path="*" element={<ErrorPage />} />
