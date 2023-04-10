@@ -11,6 +11,7 @@ import { CreatingHash } from "./components/trainer/creatingHash";
 import { SignUpClient } from "./components/client/signup_client";
 import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
+import { Create_Exercise } from "./components/trainer/create_exercise";
 
 export const App = () => {
   const token = window.localStorage.getItem("token");
@@ -36,6 +37,10 @@ export const App = () => {
         <Route
           path="/trainer/clients"
           element={<ClientsByTrainer token={token} />}
+        />
+        <Route
+          path="trainer/create_exercise"
+          element={<Create_Exercise token={token} />}
         />
         <Route
           path="client_invitation"

@@ -17,13 +17,13 @@ export const ClientsByTrainer = (props: any) => {
           "Content-Type": "application/json",
           Authorization: `bearer ${props.token}`,
         };
-        const clients = await axios.get(
+        const clientsRequest = await axios.get(
           "http://localhost:3050/trainer/clients",
 
           { headers: headers }
         );
 
-        setClients(clients.data.data.clients);
+        setClients(clientsRequest.data.data.clients);
         setSpinnerState(true);
       } catch (error) {
         const err = error as AxiosError;
