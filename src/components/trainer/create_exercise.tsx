@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
+import { Header } from "../header/header";
+import { RenderExerciseList } from "./services/RenderExerciseList";
 
 export const Create_Exercise = (props: any) => {
-  const [spinnerState, setSpinnerState] = useState(false);
+  const [renderFormState, setFormState] = useState(false);
+  const [renderExerciseState, setExerciseState] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [exercises, setExercises] = useState([]);
   if (!props.token) {
     return <Navigate to="/login" />;
   }
@@ -14,7 +20,28 @@ export const Create_Exercise = (props: any) => {
     description: "",
     category: "",
   });
-  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const GetExercises = async () => {
+      try {
+        const headers = {
+          "Content-Type": "application/json",
+          Authorization: `bearer ${props.token}`,
+        };
+        const exercisesFetch = await axios.get(
+          "http://localhost:3050/exercise/getmany",
+          { headers: headers }
+        );
+
+        setExercises(exercisesFetch.data.data.exercises);
+        setExerciseState(true);
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err.response?.data);
+      }
+    };
+    GetExercises();
+  }, [exercises]);
+
   useEffect(() => {
     const getCategories = async () => {
       try {
@@ -30,7 +57,8 @@ export const Create_Exercise = (props: any) => {
         );
 
         setCategories(categories_fetch.data.data.Categories);
-        setSpinnerState(true);
+        setFormState(true);
+        true;
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
@@ -51,7 +79,12 @@ export const Create_Exercise = (props: any) => {
   };
   const HandleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!inputForm.name || !inputForm.video_link || !inputForm.description) {
+    if (
+      !inputForm.name ||
+      !inputForm.video_link ||
+      !inputForm.description ||
+      !inputForm.category
+    ) {
       return;
     }
     try {
@@ -78,78 +111,27 @@ export const Create_Exercise = (props: any) => {
 
   return (
     <div>
-      {spinnerState ? (
+      {renderFormState && renderExerciseState ? (
         categories.length === 0 ? (
-          <form onSubmit={HandleSubmitForm}>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              value={inputForm.name}
-              onChange={handleChangeForm}
-              name="name"
-              id="name"
+          <div>
+            <RenderExerciseCreateForm
+              inputForm={inputForm}
+              handleChangeForm={handleChangeForm}
+              categories={categories}
+              HandleSubmitForm={HandleSubmitForm}
             />
-            <label htmlFor="video_link">Video Link:</label>
-            <input
-              type="text"
-              value={inputForm.video_link}
-              onChange={handleChangeForm}
-              name="video_link"
-              id="video_link"
-            />
-            <label htmlFor="description">Description:</label>
-            <textarea
-              value={inputForm.description}
-              onChange={handleChangeForm}
-              name="description"
-              id="description"
-            />
-            <label htmlFor="categories">Category:</label>
-            <div>There is not categories</div>
-
-            <button type="submit">Create Exercise</button>
-          </form>
+            <div>There are no categories available</div>
+          </div>
         ) : (
-          <form onSubmit={HandleSubmitForm}>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              value={inputForm.name}
-              onChange={handleChangeForm}
-              name="name"
-              id="name"
+          <div>
+            <RenderExerciseCreateForm
+              inputForm={inputForm}
+              handleChangeForm={handleChangeForm}
+              categories={categories}
+              HandleSubmitForm={HandleSubmitForm}
             />
-            <label htmlFor="video_link">Video Link:</label>
-            <input
-              type="text"
-              value={inputForm.video_link}
-              onChange={handleChangeForm}
-              name="video_link"
-              id="video_link"
-            />
-            <label htmlFor="description">Description:</label>
-            <textarea
-              value={inputForm.description}
-              onChange={handleChangeForm}
-              name="description"
-              id="description"
-            />
-            <label htmlFor="categories">Category:</label>
-            <select
-              name="category"
-              id="categories"
-              value={inputForm.category}
-              onChange={handleChangeForm}
-            >
-              {categories.map((category: any) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-
-            <button type="submit">Create Exercise</button>
-          </form>
+            <RenderExerciseList exercises={exercises} />
+          </div>
         )
       ) : (
         <LoadingSpinner />
