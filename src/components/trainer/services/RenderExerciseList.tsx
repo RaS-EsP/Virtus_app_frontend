@@ -6,7 +6,15 @@ export const RenderExerciseList = ({ exercises }: { exercises: any[] }) => {
       {exercises.map((exercise: any) => (
         <li key={exercise._id}>
           <div>Nombre: {exercise.name}</div>
-          <div>Link del video: {exercise.video_link}</div>
+          <div>
+            <a
+              href={exercise.video_link}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver video
+            </a>
+          </div>
         </li>
       ))}
     </ul>

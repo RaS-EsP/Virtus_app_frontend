@@ -1,22 +1,26 @@
 import axios, { AxiosError } from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
+import { Context } from "../context/UserContext";
+import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 
-export const ClientsByTrainer = (props: any) => {
+export const ClientsByTrainer = () => {
+  const { jwt } = useContext(Context);
+
+  if (!useIsAuthJwt(jwt)) {
+    return <Navigate to={"/trainer/login"} />;
+  }
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `bearer ${jwt}`,
+  };
   const [clients, setClients] = useState([]);
   const [spinnerState, setSpinnerState] = useState(false);
-  if (!props.token) {
-    return <Navigate to="/login" />;
-  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${props.token}`,
-        };
         const clientsRequest = await axios.get(
           "http://localhost:3050/trainer/clients",
 

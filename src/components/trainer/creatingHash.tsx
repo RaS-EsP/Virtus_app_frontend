@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
+import { Context } from "../context/UserContext";
+import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 
-export const CreatingHash = (props: any) => {
-  const [code, setCode] = useState("");
-  if (!props.token) {
-    return <Navigate to="/" />;
+export const CreatingHash = () => {
+  const { jwt } = useContext(Context);
+
+  if (!useIsAuthJwt(jwt)) {
+    return <Navigate to={"/trainer/login"} />;
   }
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `bearer ${jwt}`,
+  };
+  const [code, setCode] = useState("");
+
   const creatingCodeRequest = async () => {
     try {
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${props.token}`,
-      };
       const codeRequest = await axios.post(
         "http://localhost:3050/hash/create",
         {},
@@ -28,11 +33,14 @@ export const CreatingHash = (props: any) => {
   return (
     <div>
       <div>
-        {code == ""
-          ? ""
-          : `tu link es http://localhost:3000/client/signup/${code}`}
+        {code == "" ? (
+          <button onClick={creatingCodeRequest}>
+            Create a link for a client
+          </button>
+        ) : (
+          `tu link es http://localhost:3000/client/signup/${code}`
+        )}
       </div>
-      <button onClick={creatingCodeRequest}>Create a link for a client</button>
     </div>
   );
 };

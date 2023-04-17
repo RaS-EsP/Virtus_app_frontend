@@ -1,31 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
-import { Header } from "../header/header";
 import { RenderExerciseList } from "./services/RenderExerciseList";
+import { Context } from "../context/UserContext";
+import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
+type Exercise = {
+  id: number;
+  name: string;
+  category: string;
+  description: string;
+};
 
-export const Create_Exercise = (props: any) => {
+export const Create_Exercise = () => {
+  const { jwt } = useContext(Context);
+
+  if (!useIsAuthJwt(jwt)) {
+    return <Navigate to={"/trainer/login"} />;
+  }
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `bearer ${jwt}`,
+  };
+
   const [renderFormState, setFormState] = useState(false);
   const [renderExerciseState, setExerciseState] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [exercises, setExercises] = useState([]);
-  if (!props.token) {
-    return <Navigate to="/login" />;
-  }
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [newExercise, setNewExercise] = useState<Exercise | null>(null);
+
   const [inputForm, setInputForm] = useState({
     name: "",
     video_link: "",
     description: "",
     category: "",
   });
+  const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
+
   useEffect(() => {
     const GetExercises = async () => {
+      console.log("hola");
       try {
         const headers = {
           "Content-Type": "application/json",
-          Authorization: `bearer ${props.token}`,
+          Authorization: `bearer ${jwt}`,
         };
         const exercisesFetch = await axios.get(
           "http://localhost:3050/exercise/getmany",
@@ -40,15 +59,11 @@ export const Create_Exercise = (props: any) => {
       }
     };
     GetExercises();
-  }, [exercises]);
+  }, [newExercise]);
 
   useEffect(() => {
     const getCategories = async () => {
       try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${props.token}`,
-        };
         const categories_fetch = await axios.get(
           "http://localhost:3050/category/get_categories",
           {
@@ -77,6 +92,7 @@ export const Create_Exercise = (props: any) => {
       [e.target.name]: e.target.value,
     });
   };
+
   const HandleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (
@@ -88,10 +104,6 @@ export const Create_Exercise = (props: any) => {
       return;
     }
     try {
-      const headers = {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${props.token}`,
-      };
       const SubmitResponse = await axios.post(
         "http://localhost:3050/exercise/create_exercise",
         {
@@ -103,10 +115,19 @@ export const Create_Exercise = (props: any) => {
         { headers: headers }
       );
       alert("ejercicios creado correctamente");
+      setNewExercise(SubmitResponse.data.data.exercise);
     } catch (error) {
       const err = error as AxiosError;
       console.log(err.response?.data);
     }
+  };
+  const filterExercises = (searchValue: string) => {
+    const filtered = exercises.filter((exercise) => {
+      const name = exercise.name.toLowerCase();
+      const search = searchValue.toLowerCase();
+      return name.includes(search);
+    });
+    setFilteredExercises(filtered);
   };
 
   return (
@@ -130,7 +151,18 @@ export const Create_Exercise = (props: any) => {
               categories={categories}
               HandleSubmitForm={HandleSubmitForm}
             />
-            <RenderExerciseList exercises={exercises} />
+            <div>
+              <input
+                type="text"
+                name="filter"
+                onChange={(e) => filterExercises(e.target.value)}
+              ></input>
+            </div>
+            <RenderExerciseList
+              exercises={
+                filteredExercises.length > 0 ? filteredExercises : exercises
+              }
+            />
           </div>
         )
       ) : (

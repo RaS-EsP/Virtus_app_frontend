@@ -12,46 +12,28 @@ import { SignUpClient } from "./components/client/signup_client";
 import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
 import { Create_Exercise } from "./components/trainer/create_exercise";
+import { UserContextPROVIDER } from "./components/context/UserContext";
 
 export const App = () => {
-  const token = window.localStorage.getItem("token");
-
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route
-          path="/trainer/signup"
-          element={token ? <Login /> : <Signup />}
-        />
-        <Route path="/trainer/login" element={token ? <Home /> : <Login />} />
-        <Route
-          path="/"
-          element={token ? <Home /> : <Login />}
-          errorElement={<ErrorPage />}
-        />
-        <Route
-          path="trainer/create_category"
-          element={<Create_category token={token} />}
-        />
-        <Route
-          path="/trainer/clients"
-          element={<ClientsByTrainer token={token} />}
-        />
-        <Route
-          path="trainer/create_exercise"
-          element={<Create_Exercise token={token} />}
-        />
-        <Route
-          path="client_invitation"
-          element={<CreatingHash token={token} />}
-        />
+    <UserContextPROVIDER>
+      <Router>
+        <Header />
+        <Routes>
+          <Route path="/trainer/signup" element={<Signup />} />
+          <Route path="/trainer/login" element={<Login />} />
+          <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+          <Route path="trainer/create_category" element={<Create_category />} />
+          <Route path="/trainer/clients" element={<ClientsByTrainer />} />
+          <Route path="trainer/create_exercise" element={<Create_Exercise />} />
+          <Route path="client_invitation" element={<CreatingHash />} />
 
-        <Route path="client/login" element={<Login_client />} />
-        <Route path="client/signup/:code" element={<SignUpClient />} />
-        <Route path="/logout" element={<Logout token={token} />} />
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </Router>
+          <Route path="client/login" element={<Login_client />} />
+          <Route path="client/signup/:code" element={<SignUpClient />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Router>
+    </UserContextPROVIDER>
   );
 };

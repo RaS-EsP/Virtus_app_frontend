@@ -6,6 +6,7 @@ export const Header = () => {
   const padding = {
     padding: 5,
   };
+
   const token = window.localStorage.getItem("token");
 
   return (
