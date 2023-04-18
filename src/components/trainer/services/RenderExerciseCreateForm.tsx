@@ -43,6 +43,7 @@ export const RenderExerciseCreateForm = ({
         value={inputForm.category}
         onChange={handleChangeForm}
       >
+        <option value="">Choose a category</option>
         {categories.map((category: any) => (
           <option key={category.id} value={category.id}>
             {category.name}

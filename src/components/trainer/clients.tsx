@@ -1,22 +1,31 @@
 import axios, { AxiosError } from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { Context } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-
+type Client = {
+  id: number;
+  name: string;
+  last_name: string;
+  username: string;
+  email: string;
+};
 export const ClientsByTrainer = () => {
   const { jwt } = useContext(Context);
 
   if (!useIsAuthJwt(jwt)) {
     return <Navigate to={"/trainer/login"} />;
   }
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `bearer ${jwt}`,
-  };
-  const [clients, setClients] = useState([]);
-  const [spinnerState, setSpinnerState] = useState(false);
+  const headers = useMemo(
+    () => ({
+      "Content-Type": "application/json",
+      Authorization: `bearer ${jwt}`,
+    }),
+    [jwt]
+  );
+  const [clients, setClients] = useState<Client[]>([]);
+  const [Isloading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +37,7 @@ export const ClientsByTrainer = () => {
         );
 
         setClients(clientsRequest.data.data.clients);
-        setSpinnerState(true);
+        setIsLoading(true);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
@@ -39,7 +48,7 @@ export const ClientsByTrainer = () => {
 
   return (
     <div>
-      {spinnerState ? (
+      {Isloading ? (
         <ul>
           {clients.map((client: any) => (
             <li key={client.id}>

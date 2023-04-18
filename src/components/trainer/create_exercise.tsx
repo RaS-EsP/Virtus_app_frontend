@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+  useMemo,
+} from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
@@ -6,6 +12,7 @@ import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
 import { RenderExerciseList } from "./services/RenderExerciseList";
 import { Context } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
+import { URLS } from "../../urls";
 type Exercise = {
   id: number;
   name: string;
@@ -16,13 +23,21 @@ type Exercise = {
 export const Create_Exercise = () => {
   const { jwt } = useContext(Context);
 
-  if (!useIsAuthJwt(jwt)) {
+  try {
+    if (!useIsAuthJwt(jwt)) {
+      return <Navigate to={"/trainer/login"} />;
+    }
+  } catch (error) {
+    console.log(error);
     return <Navigate to={"/trainer/login"} />;
   }
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `bearer ${jwt}`,
-  };
+  const headers = useMemo(
+    () => ({
+      "Content-Type": "application/json",
+      Authorization: `bearer ${jwt}`,
+    }),
+    [jwt]
+  );
 
   const [renderFormState, setFormState] = useState(false);
   const [renderExerciseState, setExerciseState] = useState(false);
@@ -40,14 +55,9 @@ export const Create_Exercise = () => {
 
   useEffect(() => {
     const GetExercises = async () => {
-      console.log("hola");
       try {
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${jwt}`,
-        };
         const exercisesFetch = await axios.get(
-          "http://localhost:3050/exercise/getmany",
+          `${URLS.domain}/exercise/getmany`,
           { headers: headers }
         );
 
@@ -76,7 +86,7 @@ export const Create_Exercise = () => {
         true;
       } catch (error) {
         const err = error as AxiosError;
-        console.log(err.response?.data);
+        console.log(err?.response?.data);
       }
     };
     getCategories();
@@ -118,18 +128,20 @@ export const Create_Exercise = () => {
       setNewExercise(SubmitResponse.data.data.exercise);
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.response?.data);
+      console.log(err?.response?.data);
     }
   };
-  const filterExercises = (searchValue: string) => {
-    const filtered = exercises.filter((exercise) => {
-      const name = exercise.name.toLowerCase();
-      const search = searchValue.toLowerCase();
-      return name.includes(search);
-    });
-    setFilteredExercises(filtered);
-  };
-
+  const filterExercises = useCallback(
+    (searchValue: string) => {
+      const filtered = exercises.filter((exercise) => {
+        const name = exercise.name.toLowerCase();
+        const search = searchValue.toLowerCase();
+        return name.includes(search);
+      });
+      setFilteredExercises(filtered);
+    },
+    [exercises]
+  );
   return (
     <div>
       {renderFormState && renderExerciseState ? (
@@ -141,7 +153,7 @@ export const Create_Exercise = () => {
               categories={categories}
               HandleSubmitForm={HandleSubmitForm}
             />
-            <div>There are no categories available</div>
+            <div>First, create categories for your exercises</div>
           </div>
         ) : (
           <div>

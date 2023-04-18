@@ -26,6 +26,9 @@ export const Header = () => {
             <Link style={padding} to="/client_invitation">
               Client Invitation
             </Link>
+            <Link style={padding} to="/trainer/create_training">
+              Create training
+            </Link>
           </div>
         ) : (
           <div>

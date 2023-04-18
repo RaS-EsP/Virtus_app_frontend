@@ -13,6 +13,7 @@ import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
 import { Create_Exercise } from "./components/trainer/create_exercise";
 import { UserContextPROVIDER } from "./components/context/UserContext";
+import { Create_training } from "./components/trainer/create_training";
 
 export const App = () => {
   return (
@@ -26,6 +27,7 @@ export const App = () => {
           <Route path="trainer/create_category" element={<Create_category />} />
           <Route path="/trainer/clients" element={<ClientsByTrainer />} />
           <Route path="trainer/create_exercise" element={<Create_Exercise />} />
+          <Route path="trainer/create_training" element={<Create_training />} />
           <Route path="client_invitation" element={<CreatingHash />} />
 
           <Route path="client/login" element={<Login_client />} />
