@@ -6,20 +6,7 @@ import { Navigate } from "react-router-dom";
 import { URLS } from "../../urls";
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
 import "../../styles/create_exercises.css";
-
-interface Training {
-  name: string;
-  description: string;
-}
-interface Exercise {
-  id: string;
-  name: string;
-  description: string;
-  video_link: string;
-  trainer_id: string;
-}
-
-// ...
+import { Training, Exercise, TrainingDetails } from "./trainerInterface";
 
 export const Create_training = () => {
   const { jwt } = useContext(Context);
@@ -51,9 +38,13 @@ export const Create_training = () => {
   const [ExercisesDetailTable, setExercisesDetailTable] = useState<Exercise[]>(
     []
   );
+  const [trainingDetails, setTrainingDetails] = useState<TrainingDetails>({
+    trainingName: "",
+    trainingDescription: "",
+    exerciseDetails: [],
+  });
 
   const handleChangeInputForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(URLS.domain);
     setInputFormValueTraining({
       ...inputFormValueTraining,
       [e.target.name]: e.target.value,
@@ -67,19 +58,45 @@ export const Create_training = () => {
     if (!inputFormValueTraining.name || !inputFormValueTraining.description) {
       return;
     }
+    setTrainingDetails({
+      trainingName: inputFormValueTraining.name,
+      trainingDescription: inputFormValueTraining.description,
+      exerciseDetails: ExercisesDetailTable.map(
+        (exercise: Exercise, index) => ({
+          exerciseId: exercise.id,
+          sets: parseInt(
+            (document.getElementById(`setsId${index}`) as HTMLInputElement)
+              .value
+          ),
+          reps: parseInt(
+            (document.getElementById(`repsId${index}`) as HTMLInputElement)
+              .value
+          ),
+          rir: parseInt(
+            (document.getElementById(`rirId${index}`) as HTMLInputElement).value
+          ),
+          rest: parseInt(
+            (document.getElementById(`restId${index}`) as HTMLInputElement)
+              .value
+          ),
+          weight: parseFloat(
+            (document.getElementById(`weightId${index}`) as HTMLInputElement)
+              .value
+          ),
+        })
+      ),
+    });
     try {
-      const POSTtrainingInfo = await axios.post(
-        `${URLS.domain}/training/create`,
-        {
-          name: inputFormValueTraining.name,
-          description: inputFormValueTraining.description,
-        },
+      const FetchCreateTrainingWithDetails = await axios.post(
+        `${URLS.domain}/training/create_with_detail_views`,
+        { trainingDetails },
         { headers: headers }
       );
+
       alert("Entrenamiento creado correctamente");
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err?.response?.data);
+      console.log(err.response?.data);
     }
   };
 
@@ -116,16 +133,51 @@ export const Create_training = () => {
                 <tr key={index}>
                   <td>{exercise.name}</td>
                   <td>
-                    <input type="number" min={0} max={100} />
+                    <input
+                      id={`setsId${index}`}
+                      type="number"
+                      defaultValue={4}
+                      min={0}
+                      max={100}
+                    />
                   </td>
                   <td>
-                    <input type="number" min={0} max={100} />
+                    <input
+                      id={`repsId${index}`}
+                      type="number"
+                      defaultValue={12}
+                      min={0}
+                      max={100}
+                    />
                   </td>
                   <td>
-                    <input type="number" min={0} max={10} />
+                    <input
+                      id={`rirId${index}`}
+                      type="number"
+                      defaultValue={0}
+                      min={0}
+                      max={10}
+                    />
+                  </td>
+
+                  <td>
+                    <input
+                      id={`restId${index}`}
+                      type="number"
+                      defaultValue={60}
+                      min={0}
+                      max={1000}
+                    />
                   </td>
                   <td>
-                    <input type="number" min={0} max={1000} />
+                    <input
+                      id={`weightId${index}`}
+                      type="number"
+                      defaultValue={0}
+                      step={".01"}
+                      min={0}
+                      max={1000}
+                    />
                   </td>
                 </tr>
               ))}
@@ -167,6 +219,7 @@ export const Create_training = () => {
           </div>
         ))}
       </div>
+      {JSON.stringify(trainingDetails)}
     </div>
   );
 };
