@@ -26,3 +26,26 @@ export interface ExerciseDetails {
 export interface Props {
   ExercisesDetailTable: Exercise[];
 }
+export interface TrainingList {
+  id: string;
+  trainer_id: string;
+  name: string;
+  description: string;
+  created_at: Date;
+  updated_at: Date;
+}
+export interface getTrainingDetailsInterface {
+  id: string;
+  exercise: ExerciseName;
+  training_id: string;
+  exercise_id: string;
+  sets: number;
+  repetitions: number;
+  rest: number;
+  rir: number;
+  weight: number;
+}
+export interface ExerciseName {
+  name: string;
+  description: string;
+}

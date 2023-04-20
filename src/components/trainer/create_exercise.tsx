@@ -13,12 +13,7 @@ import { RenderExerciseList } from "./services/RenderExerciseList";
 import { Context } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { URLS } from "../../urls";
-type Exercise = {
-  id: number;
-  name: string;
-  category: string;
-  description: string;
-};
+import { Exercise } from "./trainerInterface";
 
 export const Create_Exercise = () => {
   const { jwt } = useContext(Context);

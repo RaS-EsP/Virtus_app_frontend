@@ -29,6 +29,9 @@ export const Header = () => {
             <Link style={padding} to="/trainer/create_training">
               Create training
             </Link>
+            <Link style={padding} to="/trainer/trainings">
+              Trainings
+            </Link>
           </div>
         ) : (
           <div>
