@@ -23,3 +23,6 @@ export interface ExerciseDetails {
   rest: number;
   weight: number;
 }
+export interface Props {
+  ExercisesDetailTable: Exercise[];
+}

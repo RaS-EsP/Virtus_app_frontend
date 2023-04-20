@@ -7,6 +7,10 @@ import { URLS } from "../../urls";
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
 import "../../styles/create_exercises.css";
 import { Training, Exercise, TrainingDetails } from "./trainerInterface";
+import {
+  RenderEmptyTableWithoutExerciseDetails,
+  RenderTableWithExerciseDetail,
+} from "./services/RenderTrainingCreate";
 
 export const Create_training = () => {
   const { jwt } = useContext(Context);
@@ -86,19 +90,31 @@ export const Create_training = () => {
         })
       ),
     });
-    try {
-      const FetchCreateTrainingWithDetails = await axios.post(
-        `${URLS.domain}/training/create_with_detail_views`,
-        { trainingDetails },
-        { headers: headers }
-      );
-
-      alert("Entrenamiento creado correctamente");
-    } catch (error) {
-      const err = error as AxiosError;
-      console.log(err.response?.data);
-    }
   };
+  useEffect(() => {
+    if (
+      !trainingDetails.trainingName ||
+      !trainingDetails.trainingDescription ||
+      trainingDetails.exerciseDetails.length === 0
+    ) {
+      return console.log("no hay data");
+    }
+    const createTraining = async () => {
+      try {
+        const FetchCreateTrainingWithDetails = await axios.post(
+          `${URLS.domain}/training/create_with_detail_views`,
+          { trainingDetails },
+          { headers: headers }
+        );
+
+        alert("Entrenamiento creado correctamente");
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err.response?.data);
+      }
+    };
+    createTraining();
+  }, [trainingDetails]);
 
   return (
     <div>
@@ -120,83 +136,11 @@ export const Create_training = () => {
         <button type="submit">Create training</button>
 
         {ExercisesDetailTable.length > 0 ? (
-          <table>
-            <tbody>
-              <tr>
-                <th>Name</th>
-                <th>Sets</th>
-                <th>Reps</th>
-                <th>RIR</th>
-                <th>Rest</th>
-              </tr>
-              {ExercisesDetailTable.map((exercise, index) => (
-                <tr key={index}>
-                  <td>{exercise.name}</td>
-                  <td>
-                    <input
-                      id={`setsId${index}`}
-                      type="number"
-                      defaultValue={4}
-                      min={0}
-                      max={100}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      id={`repsId${index}`}
-                      type="number"
-                      defaultValue={12}
-                      min={0}
-                      max={100}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      id={`rirId${index}`}
-                      type="number"
-                      defaultValue={0}
-                      min={0}
-                      max={10}
-                    />
-                  </td>
-
-                  <td>
-                    <input
-                      id={`restId${index}`}
-                      type="number"
-                      defaultValue={60}
-                      min={0}
-                      max={1000}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      id={`weightId${index}`}
-                      type="number"
-                      defaultValue={0}
-                      step={".01"}
-                      min={0}
-                      max={1000}
-                    />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <RenderTableWithExerciseDetail
+            ExercisesDetailTable={ExercisesDetailTable}
+          />
         ) : (
-          <div>
-            <table>
-              <tbody>
-                <tr>
-                  <th>Name</th>
-                  <th>Sets</th>
-                  <th>Reps</th>
-                  <th>RIR</th>
-                  <th>Rest</th>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <RenderEmptyTableWithoutExerciseDetails />
         )}
       </form>
       <div className="containerExercises">
@@ -219,7 +163,6 @@ export const Create_training = () => {
           </div>
         ))}
       </div>
-      {JSON.stringify(trainingDetails)}
     </div>
   );
 };
