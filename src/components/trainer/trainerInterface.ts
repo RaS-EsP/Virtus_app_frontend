@@ -48,4 +48,9 @@ export interface getTrainingDetailsInterface {
 export interface ExerciseName {
   name: string;
   description: string;
+  video_link: string;
+}
+export interface Categories {
+  id: string;
+  name: string;
 }

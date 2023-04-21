@@ -147,7 +147,16 @@ export const Create_training = () => {
         {exercises.map((exercise: Exercise) => (
           <div key={exercise.id}>
             <h2>{exercise.name}</h2>
-            <a href={exercise.video_link}>Video</a>
+            <iframe
+              width="210"
+              height="172.5"
+              src={`https://www.youtube.com/embed/${
+                exercise.video_link.split("v=")[1]
+              }`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+
             <div>
               <button
                 onClick={() => {

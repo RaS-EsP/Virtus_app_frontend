@@ -1,4 +1,5 @@
 import React from "react";
+import { Categories } from "../trainerInterface";
 
 export const RenderExerciseCreateForm = ({
   inputForm,
@@ -44,8 +45,8 @@ export const RenderExerciseCreateForm = ({
         onChange={handleChangeForm}
       >
         <option value="">Choose a category</option>
-        {categories.map((category: any) => (
-          <option key={category.id} value={category.id}>
+        {categories.map((category: Categories, index: number) => (
+          <option key={index} value={category.id}>
             {category.name}
           </option>
         ))}

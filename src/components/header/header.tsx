@@ -20,9 +20,7 @@ export const Header = () => {
             <Link style={padding} to="/trainer/clients">
               Clients
             </Link>
-            <Link style={padding} to="/logout">
-              Logout
-            </Link>
+
             <Link style={padding} to="/client_invitation">
               Client Invitation
             </Link>
@@ -31,6 +29,12 @@ export const Header = () => {
             </Link>
             <Link style={padding} to="/trainer/trainings">
               Trainings
+            </Link>
+            <Link style={padding} to="trainer/create_exercise">
+              Create Exercises
+            </Link>
+            <Link style={padding} to="/logout">
+              Logout
             </Link>
           </div>
         ) : (

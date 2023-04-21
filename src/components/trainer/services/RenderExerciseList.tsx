@@ -1,19 +1,21 @@
 import React from "react";
-
+import { Exercise } from "../trainerInterface";
 export const RenderExerciseList = ({ exercises }: { exercises: any[] }) => {
   return (
     <ul>
-      {exercises.map((exercise: any) => (
-        <li key={exercise._id}>
+      {exercises.map((exercise: Exercise, index: number) => (
+        <li key={index}>
           <div>Nombre: {exercise.name}</div>
           <div>
-            <a
-              href={exercise.video_link}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ver video
-            </a>
+            <iframe
+              width="210"
+              height="172.5"
+              src={`https://www.youtube.com/embed/${
+                exercise.video_link.split("v=")[1]
+              }`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
         </li>
       ))}
