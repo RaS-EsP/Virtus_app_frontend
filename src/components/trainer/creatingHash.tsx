@@ -1,19 +1,12 @@
 import React, { useState, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 
 export const CreatingHash = () => {
-  const { jwt } = useContext(Context);
+  const { jwt, headers } = useContext(UserContext);
 
-  if (!useIsAuthJwt(jwt)) {
-    return <Navigate to={"/trainer/login"} />;
-  }
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `bearer ${jwt}`,
-  };
   const [code, setCode] = useState("");
 
   const creatingCodeRequest = async () => {

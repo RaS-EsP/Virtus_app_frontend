@@ -1,7 +1,8 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useMemo, useState, useEffect } from "react";
 
-export const Context = createContext({
+export const UserContext = createContext({
   jwt: "",
+  headers: {},
 });
 
 export function UserContextPROVIDER({
@@ -10,7 +11,13 @@ export function UserContextPROVIDER({
   children: React.ReactNode;
 }) {
   const [jwt, setJwt] = useState(localStorage.getItem("token") || "");
-
+  const headers = useMemo(
+    () => ({
+      "Content-Type": "application/json",
+      Authorization: `bearer ${jwt}`,
+    }),
+    [jwt]
+  );
   useEffect(() => {
     const storedJwt = localStorage.getItem("token");
     if (storedJwt !== jwt && storedJwt !== null) {
@@ -18,5 +25,9 @@ export function UserContextPROVIDER({
     }
   }, [jwt]);
 
-  return <Context.Provider value={{ jwt }}>{children}</Context.Provider>;
+  return (
+    <UserContext.Provider value={{ jwt, headers }}>
+      {children}
+    </UserContext.Provider>
+  );
 }

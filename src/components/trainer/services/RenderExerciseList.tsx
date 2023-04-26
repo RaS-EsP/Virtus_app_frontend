@@ -1,5 +1,5 @@
 import React from "react";
-import { Exercise } from "../trainerInterface";
+import { Exercise } from "../../../Interfaces";
 export const RenderExerciseList = ({ exercises }: { exercises: any[] }) => {
   return (
     <ul>

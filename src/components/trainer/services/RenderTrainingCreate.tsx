@@ -1,6 +1,6 @@
 import React from "react";
-import { Exercise } from "../trainerInterface";
-import { Props } from "../trainerInterface";
+import { Exercise } from "../../../Interfaces";
+import { Props } from "../../../Interfaces";
 export const RenderTableWithExerciseDetail = ({
   ExercisesDetailTable,
 }: Props) => {

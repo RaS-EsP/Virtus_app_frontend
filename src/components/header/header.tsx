@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/header.css";
+import { UserContext } from "../context/UserContext";
+import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 
 export const Header = () => {
   const padding = {
     padding: 5,
   };
 
-  const token = window.localStorage.getItem("token");
+  const token = useIsAuthJwt();
 
   return (
     <header>
@@ -35,6 +37,12 @@ export const Header = () => {
             </Link>
             <Link style={padding} to="/logout">
               Logout
+            </Link>
+            <Link style={padding} to="/client/scheduled_training">
+              (Client)Scheduled training
+            </Link>
+            <Link style={padding} to="/trainer/asign_schedule_training">
+              Asign Scheduled training
             </Link>
           </div>
         ) : (

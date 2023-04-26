@@ -2,55 +2,20 @@ import axios, { AxiosError } from "axios";
 import React, { useEffect, useState, useContext, useMemo } from "react";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-type Client = {
-  id: number;
-  name: string;
-  last_name: string;
-  username: string;
-  email: string;
-};
+import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
+import { Client } from "../../Interfaces";
 export const ClientsByTrainer = () => {
-  const { jwt } = useContext(Context);
+  const { jwt, headers } = useContext(UserContext);
 
-  if (!useIsAuthJwt(jwt)) {
-    return <Navigate to={"/trainer/login"} />;
-  }
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
-  const [clients, setClients] = useState<Client[]>([]);
-  const [Isloading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const clientsRequest = await axios.get(
-          "http://localhost:3050/trainer/clients",
-
-          { headers: headers }
-        );
-
-        setClients(clientsRequest.data.data.clients);
-        setIsLoading(true);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err.response?.data);
-      }
-    };
-    fetchData();
-  }, []);
+  const { clients, Isloading } = useGetClientsByTrainer(jwt, headers);
 
   return (
     <div>
       {Isloading ? (
         <ul>
-          {clients.map((client: any) => (
+          {clients.map((client: Client) => (
             <li key={client.id}>
               {client.name} {client.last_name} {client.username} {client.email}
             </li>

@@ -10,29 +10,13 @@ import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
 import { RenderExerciseList } from "./services/RenderExerciseList";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { URLS } from "../../urls";
-import { Exercise } from "./trainerInterface";
+import { Exercise } from "../../Interfaces";
 
 export const Create_Exercise = () => {
-  const { jwt } = useContext(Context);
-
-  try {
-    if (!useIsAuthJwt(jwt)) {
-      return <Navigate to={"/trainer/login"} />;
-    }
-  } catch (error) {
-    console.log(error);
-    return <Navigate to={"/trainer/login"} />;
-  }
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
+  const { jwt, headers } = useContext(UserContext);
 
   const [renderFormState, setFormState] = useState(false);
   const [renderExerciseState, setExerciseState] = useState(false);

@@ -1,21 +1,14 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
 import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";
-import { TrainingList } from "./trainerInterface";
+import { TrainingList } from "../../Interfaces";
 import { RenderTrainingList } from "./services/RenderTrainingList";
 export const TrainingsView = () => {
-  const { jwt } = useContext(Context);
+  const { jwt } = useContext(UserContext);
   const [inputSearchValue, SetInputSearchValue] = useState("");
-  try {
-    if (!useIsAuthJwt(jwt)) {
-      return <Navigate to={"/trainer/login"} />;
-    }
-  } catch (error) {
-    console.log(error);
-    return <Navigate to={"/trainer/login"} />;
-  }
+
   const headers = useMemo(
     () => ({
       "Content-Type": "application/json",
@@ -23,7 +16,7 @@ export const TrainingsView = () => {
     }),
     [jwt]
   );
-  const { trainings } = useGetTrainingsByTrainer(jwt, headers);
+  const { trainings } = useGetTrainingsByTrainer();
   const [trainingsListFiltered, setTrainingListFiltered] = useState<
     TrainingList[]
   >([]);

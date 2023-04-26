@@ -1,9 +1,14 @@
 import React from "react";
 
-export function useIsAuthJwt(jwt: string) {
-  if (!jwt) {
-    console.log("no tienes jwt");
-    return false;
-  }
-  return true;
+export function useIsAuthJwt() {
+  const token = getAuthToken();
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  return Boolean(token);
+}
+
+export function getAuthToken() {
+  return localStorage.getItem("token");
 }

@@ -1,24 +1,16 @@
 import React, { useContext, useMemo, useEffect, useState } from "react";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { Navigate, useParams } from "react-router-dom";
 import { useGetTrainingsDetailsByTraining } from "../../hooks/useGetTrainingDetail";
-import { getTrainingDetailsInterface } from "./trainerInterface";
+import { getTrainingDetailsInterface } from "../../Interfaces";
 import { URLS } from "../../urls";
 import axios, { AxiosError } from "axios";
 export const TrainingsDetailsView = () => {
-  const { jwt } = useContext(Context);
+  const { jwt } = useContext(UserContext);
   const { id } = useParams();
   const [trainingsDetails, setTrainingsDetails] = useState([]);
 
-  try {
-    if (!useIsAuthJwt(jwt)) {
-      return <Navigate to={"/trainer/login"} />;
-    }
-  } catch (error) {
-    console.log(error);
-    return <Navigate to={"/trainer/login"} />;
-  }
   const headers = useMemo(
     () => ({
       "Content-Type": "application/json",

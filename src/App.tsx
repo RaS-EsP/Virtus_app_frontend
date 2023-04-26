@@ -12,19 +12,24 @@ import { SignUpClient } from "./components/client/signup_client";
 import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
 import { Create_Exercise } from "./components/trainer/create_exercise";
-import { UserContextPROVIDER } from "./components/context/UserContext";
 import { Create_training } from "./components/trainer/create_training";
 import { TrainingsView } from "./components/trainer/get_trainings";
 import { TrainingsDetailsView } from "./components/trainer/getTrainingDetails";
-
+import { ScheduledTrainings } from "./components/client/Scheduled_trainings";
+import { AsignScheduleTraining } from "./components/trainer/asignScheduleTraining";
+import { ProtectRouter } from "./components/ProtectRoutes";
 export const App = () => {
   return (
-    <UserContextPROVIDER>
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/trainer/signup" element={<Signup />} />
-          <Route path="/trainer/login" element={<Login />} />
+    <Router>
+      <Header />
+      <Routes>
+        {/* TRAINER */}
+        <Route path="/trainer/signup" element={<Signup />} />
+        <Route path="/trainer/login" element={<Login />} />
+        <Route path="client/login" element={<Login_client />} />
+        <Route path="client/signup/:code" element={<SignUpClient />} />
+
+        <Route element={<ProtectRouter />}>
           <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
           <Route path="trainer/create_category" element={<Create_category />} />
           <Route path="/trainer/clients" element={<ClientsByTrainer />} />
@@ -35,14 +40,23 @@ export const App = () => {
             path="trainer/training_details/:id"
             element={<TrainingsDetailsView />}
           />
+          <Route
+            path="trainer/asign_schedule_training"
+            element={<AsignScheduleTraining />}
+          />
+          {/* TRAINER */}
+          {/* CLIENT  */}
           <Route path="client_invitation" element={<CreatingHash />} />
 
-          <Route path="client/login" element={<Login_client />} />
-          <Route path="client/signup/:code" element={<SignUpClient />} />
+          <Route
+            path="/client/scheduled_training"
+            element={<ScheduledTrainings />}
+          />
+          {/* CLIENT  */}
           <Route path="/logout" element={<Logout />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </Router>
-    </UserContextPROVIDER>
+        </Route>
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </Router>
   );
 };

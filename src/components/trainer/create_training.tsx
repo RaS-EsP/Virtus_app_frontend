@@ -1,35 +1,20 @@
 import axios, { AxiosError } from "axios";
 import React, { useState, useEffect, useContext, useMemo } from "react";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
 import { URLS } from "../../urls";
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
 import "../../styles/create_exercises.css";
-import { Training, Exercise, TrainingDetails } from "./trainerInterface";
+import { Training, Exercise, TrainingDetails } from "../../Interfaces";
 import {
   RenderEmptyTableWithoutExerciseDetails,
   RenderTableWithExerciseDetail,
 } from "./services/RenderTrainingCreate";
 
 export const Create_training = () => {
-  const { jwt } = useContext(Context);
+  const { jwt, headers } = useContext(UserContext);
 
-  try {
-    if (!useIsAuthJwt(jwt)) {
-      return <Navigate to={"/trainer/login"} />;
-    }
-  } catch (error) {
-    console.log(error);
-    return <Navigate to={"/trainer/login"} />;
-  }
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
   const { exercises } = useGetExercisesByTrainer(jwt, headers);
   if (!exercises) {
     return <div>Error fetching exercises</div>;

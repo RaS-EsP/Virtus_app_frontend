@@ -1,5 +1,5 @@
 import React from "react";
-import { Categories } from "../trainerInterface";
+import { Categories } from "../../../Interfaces";
 
 export const RenderExerciseCreateForm = ({
   inputForm,

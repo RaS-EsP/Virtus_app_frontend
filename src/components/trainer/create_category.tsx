@@ -2,19 +2,11 @@ import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 
 export const Create_category = (props: any) => {
-  const { jwt } = useContext(Context);
-
-  if (!useIsAuthJwt(jwt)) {
-    return <Navigate to={"/"} />;
-  }
-  const headers = {
-    "Content-Type": "application/json",
-    Authorization: `bearer ${jwt}`,
-  };
+  const { jwt, headers } = useContext(UserContext);
 
   const [inputForm, setInputForm] = useState({
     Name: "",
