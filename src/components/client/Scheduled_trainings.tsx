@@ -6,17 +6,8 @@ import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { Scheduled_trainings } from "../../Interfaces";
-
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export function ScheduledTrainings() {
-  const { jwt } = useContext(UserContext);
-
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
   const [ScheduledTrainings, setScheduledTrainings] = useState<
     Scheduled_trainings[]
   >([]);
@@ -25,7 +16,12 @@ export function ScheduledTrainings() {
       try {
         const responseScheduledTrainings = await axios.get(
           `${URLS.domain}/scheduled_training/get`,
-          { headers: headers }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
+          }
         );
         setScheduledTrainings(
           responseScheduledTrainings.data.data.ScheduledTraining

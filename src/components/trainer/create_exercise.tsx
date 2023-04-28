@@ -14,10 +14,9 @@ import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { URLS } from "../../urls";
 import { Exercise } from "../../Interfaces";
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
 
 export const Create_Exercise = () => {
-  const { jwt, headers } = useContext(UserContext);
-
   const [renderFormState, setFormState] = useState(false);
   const [renderExerciseState, setExerciseState] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -37,7 +36,12 @@ export const Create_Exercise = () => {
       try {
         const exercisesFetch = await axios.get(
           `${URLS.domain}/exercise/getmany`,
-          { headers: headers }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
+          }
         );
 
         setExercises(exercisesFetch.data.data.exercises);
@@ -56,7 +60,10 @@ export const Create_Exercise = () => {
         const categories_fetch = await axios.get(
           "http://localhost:3050/category/get_categories",
           {
-            headers: headers,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
           }
         );
 
@@ -101,7 +108,12 @@ export const Create_Exercise = () => {
           description: inputForm.description,
           categories: [inputForm.category],
         },
-        { headers: headers }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
+        }
       );
       alert("ejercicios creado correctamente");
       setNewExercise(SubmitResponse.data.data.exercise);

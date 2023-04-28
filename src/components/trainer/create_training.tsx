@@ -11,11 +11,9 @@ import {
   RenderEmptyTableWithoutExerciseDetails,
   RenderTableWithExerciseDetail,
 } from "./services/RenderTrainingCreate";
-
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export const Create_training = () => {
-  const { jwt, headers } = useContext(UserContext);
-
-  const { exercises } = useGetExercisesByTrainer(jwt, headers);
+  const { exercises } = useGetExercisesByTrainer();
   if (!exercises) {
     return <div>Error fetching exercises</div>;
   }
@@ -89,7 +87,12 @@ export const Create_training = () => {
         const FetchCreateTrainingWithDetails = await axios.post(
           `${URLS.domain}/training/create_with_detail_views`,
           { trainingDetails },
-          { headers: headers }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
+          }
         );
 
         alert("Entrenamiento creado correctamente");

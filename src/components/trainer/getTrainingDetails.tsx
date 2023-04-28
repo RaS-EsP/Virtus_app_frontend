@@ -6,24 +6,21 @@ import { useGetTrainingsDetailsByTraining } from "../../hooks/useGetTrainingDeta
 import { getTrainingDetailsInterface } from "../../Interfaces";
 import { URLS } from "../../urls";
 import axios, { AxiosError } from "axios";
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
+
 export const TrainingsDetailsView = () => {
-  const { jwt } = useContext(UserContext);
   const { id } = useParams();
   const [trainingsDetails, setTrainingsDetails] = useState([]);
 
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
   useEffect(() => {
     const getTrainingsDetails = async () => {
       try {
         const response = await axios.get(`${URLS.domain}/training_detail/get`, {
           params: { training_id: id },
-          headers: headers,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
         });
         setTrainingsDetails(response.data.data.training_details);
       } catch (error) {

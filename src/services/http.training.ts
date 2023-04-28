@@ -10,7 +10,6 @@ type TrainingsResponse = {
 };
 const http = {
   async get_trainings(): Promise<TrainingList[] | undefined> {
-    console.log("hola");
     try {
       const exercisesFetch = await axios.get<TrainingsResponse>(
         `${URLS.domain}/training/get_trainings`,

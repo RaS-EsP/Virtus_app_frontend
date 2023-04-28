@@ -3,10 +3,8 @@ import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export const CreatingHash = () => {
-  const { jwt, headers } = useContext(UserContext);
-
   const [code, setCode] = useState("");
 
   const creatingCodeRequest = async () => {
@@ -14,7 +12,12 @@ export const CreatingHash = () => {
       const codeRequest = await axios.post(
         "http://localhost:3050/hash/create",
         {},
-        { headers: headers }
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
+        }
       );
       setCode(codeRequest.data.data.code);
     } catch (error) {

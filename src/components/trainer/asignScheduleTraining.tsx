@@ -7,9 +7,7 @@ import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
 import { Client, TrainingList } from "../../Interfaces";
 import { Training2 } from "../../Interfaces";
 export function AsignScheduleTraining() {
-  const { jwt, headers } = useContext(UserContext);
-
-  const { clients } = useGetClientsByTrainer(jwt, headers);
+  const { clients } = useGetClientsByTrainer();
   const { trainings } = useGetTrainingsByTrainer();
 
   return (

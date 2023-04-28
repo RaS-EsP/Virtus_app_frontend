@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
 import { Client } from "../Interfaces";
-export const useGetClientsByTrainer = (
-  jwt: string,
-  headers: AxiosRequestConfig["headers"]
-) => {
+import { getAuthToken } from "./useIsAuthJwt";
+export const useGetClientsByTrainer = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [Isloading, setIsLoading] = useState(false);
   useEffect(() => {
@@ -13,10 +11,15 @@ export const useGetClientsByTrainer = (
         const clientsRequest = await axios.get(
           "http://localhost:3050/trainer/clients",
 
-          { headers: headers }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
+          }
         );
 
-        setClients(clientsRequest.data.data.clients);
+        setClients(clientsRequest.data.data.clients ?? []);
         setIsLoading(true);
       } catch (error) {
         const err = error as AxiosError;

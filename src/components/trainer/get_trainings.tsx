@@ -6,16 +6,6 @@ import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";
 import { TrainingList } from "../../Interfaces";
 import { RenderTrainingList } from "./services/RenderTrainingList";
 export const TrainingsView = () => {
-  const { jwt } = useContext(UserContext);
-  const [inputSearchValue, SetInputSearchValue] = useState("");
-
-  const headers = useMemo(
-    () => ({
-      "Content-Type": "application/json",
-      Authorization: `bearer ${jwt}`,
-    }),
-    [jwt]
-  );
   const { trainings } = useGetTrainingsByTrainer();
   const [trainingsListFiltered, setTrainingListFiltered] = useState<
     TrainingList[]

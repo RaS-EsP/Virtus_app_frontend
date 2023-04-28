@@ -7,9 +7,7 @@ import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
 import { Client } from "../../Interfaces";
 export const ClientsByTrainer = () => {
-  const { jwt, headers } = useContext(UserContext);
-
-  const { clients, Isloading } = useGetClientsByTrainer(jwt, headers);
+  const { clients, Isloading } = useGetClientsByTrainer();
 
   return (
     <div>

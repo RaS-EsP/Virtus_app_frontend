@@ -4,10 +4,8 @@ import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-
+import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export const Create_category = (props: any) => {
-  const { jwt, headers } = useContext(UserContext);
-
   const [inputForm, setInputForm] = useState({
     Name: "",
   });
@@ -27,7 +25,10 @@ export const Create_category = (props: any) => {
         "http://localhost:3050/category/create",
         { name: inputForm.Name },
         {
-          headers: headers,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
         }
       );
 
