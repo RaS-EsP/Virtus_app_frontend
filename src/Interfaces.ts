@@ -8,6 +8,14 @@ export interface Exercise {
   description: string;
   video_link: string;
   trainer_id: string;
+  created_at: string;
+  updated_at: string;
+  categories: Category[];
+}
+export interface Category {
+  id: string;
+  name: string;
+  trainer_id: string;
 }
 
 export interface TrainingDetails {

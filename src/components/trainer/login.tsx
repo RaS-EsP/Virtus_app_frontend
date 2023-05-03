@@ -28,7 +28,9 @@ export const Login = () => {
         password: inputForm.password,
       });
       const token = response.data.data.access_token;
+      const role = response.data.data.role;
       window.localStorage.setItem("token", token);
+      window.localStorage.setItem("role", role);
 
       navigate("/");
       window.location.reload();

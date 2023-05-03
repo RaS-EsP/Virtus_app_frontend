@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export const CreatingHash = () => {

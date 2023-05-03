@@ -1,20 +1,35 @@
 import React, { useContext } from "react";
 import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";
-import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
 import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
 import { Client, TrainingList } from "../../Interfaces";
 import { Training2 } from "../../Interfaces";
+import { useAsignScheduleTraining } from "../../hooks/useAsignScheduleTraining";
+
 export function AsignScheduleTraining() {
   const { clients } = useGetClientsByTrainer();
   const { trainings } = useGetTrainingsByTrainer();
 
+  const HandleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const fields = Object.fromEntries(new window.FormData(event.currentTarget));
+
+    if (fields.client == "" || fields.training == "" || fields.date == "") {
+      return;
+    }
+    const result = await useAsignScheduleTraining(fields);
+    if (!result) {
+      ("There was a error creating the asignSchedule");
+    }
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={HandleSubmit}>
         <label>Client</label>
-        <select>
+
+        <select name="client">
           <option value="" disabled selected hidden>
             Choose a client
           </option>
@@ -27,7 +42,7 @@ export function AsignScheduleTraining() {
 
         <label>Training</label>
 
-        <select>
+        <select name="training">
           <option value="" disabled selected hidden>
             Choose a training
           </option>
@@ -38,7 +53,8 @@ export function AsignScheduleTraining() {
           ))}
         </select>
         <label>Date</label>
-        <input type="date" min="2018-01-01"></input>
+        <input name="date" type="date" min="2018-01-01"></input>
+        <button style={{ marginTop: "5px" }}>Asign</button>
       </form>
     </div>
   );

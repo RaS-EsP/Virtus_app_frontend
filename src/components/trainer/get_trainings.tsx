@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
-import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
 import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";

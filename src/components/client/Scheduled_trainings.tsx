@@ -4,7 +4,6 @@ import { URLS } from "../../urls";
 import { Navigate } from "react-router-dom";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
 import { Scheduled_trainings } from "../../Interfaces";
 import { getAuthToken } from "../../hooks/useIsAuthJwt";
 export function ScheduledTrainings() {

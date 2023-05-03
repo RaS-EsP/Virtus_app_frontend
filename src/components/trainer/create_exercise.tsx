@@ -10,7 +10,6 @@ import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
 import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
 import { RenderExerciseList } from "./services/RenderExerciseList";
-import { UserContext } from "../context/UserContext";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { URLS } from "../../urls";
 import { Exercise } from "../../Interfaces";

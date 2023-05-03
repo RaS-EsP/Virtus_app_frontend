@@ -18,19 +18,19 @@ import { TrainingsDetailsView } from "./components/trainer/getTrainingDetails";
 import { ScheduledTrainings } from "./components/client/Scheduled_trainings";
 import { AsignScheduleTraining } from "./components/trainer/asignScheduleTraining";
 import { ProtectRouter } from "./components/ProtectRoutes";
+import { No_Authorizaded } from "./components/No_Authorizaded_page.tsx";
 export const App = () => {
   return (
     <Router>
       <Header />
       <Routes>
+        <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+
         {/* TRAINER */}
         <Route path="/trainer/signup" element={<Signup />} />
         <Route path="/trainer/login" element={<Login />} />
-        <Route path="client/login" element={<Login_client />} />
-        <Route path="client/signup/:code" element={<SignUpClient />} />
 
-        <Route element={<ProtectRouter />}>
-          <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+        <Route element={<ProtectRouter role="trainer" />}>
           <Route path="trainer/create_category" element={<Create_category />} />
           <Route path="/trainer/clients" element={<ClientsByTrainer />} />
           <Route path="trainer/create_exercise" element={<Create_Exercise />} />
@@ -44,18 +44,24 @@ export const App = () => {
             path="trainer/asign_schedule_training"
             element={<AsignScheduleTraining />}
           />
-          {/* TRAINER */}
-          {/* CLIENT  */}
           <Route path="client_invitation" element={<CreatingHash />} />
-
+        </Route>
+        {/* TRAINER */}
+        {/* CLIENT  */}
+        <Route element={<ProtectRouter role="client" />}>
           <Route
             path="/client/scheduled_training"
             element={<ScheduledTrainings />}
           />
-          {/* CLIENT  */}
-          <Route path="/logout" element={<Logout />} />
         </Route>
+        <Route path="client/login" element={<Login_client />} />
+        <Route path="client/signup/:code" element={<SignUpClient />} />
+
+        {/* CLIENT  */}
+        <Route path="/logout" element={<Logout />} />
+
         <Route path="*" element={<ErrorPage />} />
+        <Route path="/no_authorizaded" element={<No_Authorizaded />} />
       </Routes>
     </Router>
   );

@@ -1,19 +1,25 @@
-import axios, { AxiosError } from "axios";
-import React, { useState, useEffect, useContext, useMemo } from "react";
-import { UserContext } from "../context/UserContext";
-import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-import { Navigate } from "react-router-dom";
-import { URLS } from "../../urls";
+import React, { useState } from "react";
+
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
 import "../../styles/create_exercises.css";
-import { Training, Exercise, TrainingDetails } from "../../Interfaces";
+import {
+  Training,
+  Exercise,
+  TrainingDetails,
+  Category,
+} from "../../Interfaces";
 import {
   RenderEmptyTableWithoutExerciseDetails,
   RenderTableWithExerciseDetail,
 } from "./services/RenderTrainingCreate";
-import { getAuthToken } from "../../hooks/useIsAuthJwt";
+import { useCreateTraining } from "../../hooks/useCreateTraining";
+import { RenderExercisesListWithButton } from "./services/RenderExerciseList";
+import { useGetCategories } from "../../hooks/useGetCategories";
 export const Create_training = () => {
   const { exercises } = useGetExercisesByTrainer();
+  const { categories } = useGetCategories();
+  const [filteredExercises, setFilteredExercises] =
+    useState<Exercise[]>(exercises);
   if (!exercises) {
     return <div>Error fetching exercises</div>;
   }
@@ -30,13 +36,25 @@ export const Create_training = () => {
     trainingDescription: "",
     exerciseDetails: [],
   });
-
+  const [filters, setFilterValue] = useState({
+    NameSearch: "",
+    CategorySearch: "",
+  });
+  const handleChangeFilter = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setFilterValue({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
   const handleChangeInputForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputFormValueTraining({
       ...inputFormValueTraining,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSubmitTrainingForm = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -74,35 +92,29 @@ export const Create_training = () => {
       ),
     });
   };
-  useEffect(() => {
-    if (
-      !trainingDetails.trainingName ||
-      !trainingDetails.trainingDescription ||
-      trainingDetails.exerciseDetails.length === 0
-    ) {
-      return console.log("no hay data");
-    }
-    const createTraining = async () => {
-      try {
-        const FetchCreateTrainingWithDetails = await axios.post(
-          `${URLS.domain}/training/create_with_detail_views`,
-          { trainingDetails },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `bearer ${getAuthToken()}`,
-            },
-          }
-        );
 
-        alert("Entrenamiento creado correctamente");
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log(err.response?.data);
-      }
-    };
-    createTraining();
-  }, [trainingDetails]);
+  const filterExercises = exercises.filter((exercise: Exercise) => {
+    if (filters.CategorySearch == "") {
+      return exercise.name
+        .toLowerCase()
+        .includes(filters.NameSearch.toLowerCase());
+    } else if (filters.NameSearch == "") {
+      return exercise.categories
+        .map((c) => c.name.toLowerCase())
+        .includes(filters.CategorySearch.toLowerCase());
+    } else {
+      console.log("hay ambas");
+
+      return (
+        exercise.categories
+          .map((c) => c.name.toLowerCase())
+          .includes(filters.CategorySearch.toLowerCase()) &&
+        exercise.name.toLowerCase().includes(filters.NameSearch.toLowerCase())
+      );
+    }
+  });
+
+  useCreateTraining(trainingDetails);
 
   return (
     <div>
@@ -131,35 +143,32 @@ export const Create_training = () => {
           <RenderEmptyTableWithoutExerciseDetails />
         )}
       </form>
-      <div className="containerExercises">
-        {exercises.map((exercise: Exercise) => (
-          <div key={exercise.id}>
-            <h2>{exercise.name}</h2>
-            <iframe
-              width="210"
-              height="172.5"
-              src={`https://www.youtube.com/embed/${
-                exercise.video_link.split("v=")[1]
-              }`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+      <input
+        name="NameSearch"
+        type="text"
+        onChange={handleChangeFilter}
+      ></input>
+      {/* <input
+        name="CategorySearch"
+        type="text"
+        onChange={handleChangeFilter}
+      ></input> */}
 
-            <div>
-              <button
-                onClick={() => {
-                  setExercisesDetailTable((prevExercises) => [
-                    ...prevExercises,
-                    exercise,
-                  ]);
-                }}
-              >
-                Add Exercise
-              </button>
-            </div>
-          </div>
+      <select name="CategorySearch" onChange={handleChangeFilter}>
+        <option value="" disabled selected hidden>
+          Choose a category
+        </option>
+        {categories.map((category: Category) => (
+          <option key={category.id} value={category.name}>
+            {category.name}
+          </option>
         ))}
-      </div>
+      </select>
+
+      <RenderExercisesListWithButton
+        exercises={filterExercises.length > 0 ? filterExercises : exercises}
+        setExercisesDetailTable={setExercisesDetailTable}
+      />
     </div>
   );
 };

@@ -12,3 +12,7 @@ export function useIsAuthJwt() {
 export function getAuthToken() {
   return localStorage.getItem("token");
 }
+
+export function getAuthRole() {
+  return localStorage.getItem("role");
+}
