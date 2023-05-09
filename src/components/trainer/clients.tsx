@@ -5,6 +5,7 @@ import { LoadingSpinner } from "../LoadingSpinner";
 import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
 import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
 import { Client } from "../../Interfaces";
+import { URLS } from "../../urls";
 export const ClientsByTrainer = () => {
   const { clients, Isloading } = useGetClientsByTrainer();
 
@@ -14,7 +15,10 @@ export const ClientsByTrainer = () => {
         <ul>
           {clients.map((client: Client) => (
             <li key={client.id}>
-              {client.name} {client.last_name} {client.username} {client.email}
+              <a href={`${URLS.domain_client}/trainer/clients/${client.id}`}>
+                {client.name}
+              </a>{" "}
+              {client.last_name} {client.username} {client.email}
             </li>
           ))}
         </ul>

@@ -19,6 +19,8 @@ import { ScheduledTrainings } from "./components/client/Scheduled_trainings";
 import { AsignScheduleTraining } from "./components/trainer/asignScheduleTraining";
 import { ProtectRouter } from "./components/ProtectRoutes";
 import { No_Authorizaded } from "./components/No_Authorizaded_page.tsx";
+import { TrainingbyidClient } from "./components/trainer/TrainingbyidClient";
+import { TrainingScheduleView } from "./components/trainer/TrainingScheduleView";
 export const App = () => {
   return (
     <Router>
@@ -32,13 +34,18 @@ export const App = () => {
 
         <Route element={<ProtectRouter role="trainer" />}>
           <Route path="trainer/create_category" element={<Create_category />} />
-          <Route path="/trainer/clients" element={<ClientsByTrainer />} />
+          <Route path="trainer/clients" element={<ClientsByTrainer />} />
+          <Route path="/trainer/clients/:id" element={<TrainingbyidClient />} />
           <Route path="trainer/create_exercise" element={<Create_Exercise />} />
           <Route path="trainer/create_training" element={<Create_training />} />
           <Route path="trainer/trainings" element={<TrainingsView />} />
           <Route
             path="trainer/training_details/:id"
             element={<TrainingsDetailsView />}
+          />
+          <Route
+            path="trainer/Schedule_training/:id"
+            element={<TrainingScheduleView />}
           />
           <Route
             path="trainer/asign_schedule_training"

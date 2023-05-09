@@ -1,30 +1,29 @@
+import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import axios, { AxiosError } from "axios";
+import { getAuthToken } from "./useIsAuthJwt";
 import { URLS } from "../urls";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
-export const useGetTrainingsDetailsByTraining = (
-  jwt: string,
-  headers: AxiosRequestConfig["headers"],
-  training_id: string | undefined
-) => {
+export const useGetTrainingDetailsbyTrainingId = () => {
   const [trainingsDetails, setTrainingsDetails] = useState([]);
-
+  const { id } = useParams();
   useEffect(() => {
     const getTrainingsDetails = async () => {
       try {
         const response = await axios.get(`${URLS.domain}/training_detail/get`, {
-          params: { training_id: training_id },
-          headers: headers,
+          params: { training_id: id },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
         });
         setTrainingsDetails(response.data.data.training_details);
-        console.log(trainingsDetails);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
       }
     };
+
     getTrainingsDetails();
   }, []);
-
   return { trainingsDetails };
 };
