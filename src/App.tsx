@@ -15,12 +15,13 @@ import { Create_Exercise } from "./components/trainer/create_exercise";
 import { Create_training } from "./components/trainer/create_training";
 import { TrainingsView } from "./components/trainer/get_trainings";
 import { TrainingsDetailsView } from "./components/trainer/getTrainingDetails";
-import { ScheduledTrainings } from "./components/client/Scheduled_trainings";
+import { TrainingListByClient } from "./components/client/trainingsByClient";
 import { AsignScheduleTraining } from "./components/trainer/asignScheduleTraining";
 import { ProtectRouter } from "./components/ProtectRoutes";
 import { No_Authorizaded } from "./components/No_Authorizaded_page.tsx";
 import { TrainingbyidClient } from "./components/trainer/TrainingbyidClient";
 import { TrainingScheduleView } from "./components/trainer/TrainingScheduleView";
+import { WorkoutView } from "./components/client/workout_view";
 export const App = () => {
   return (
     <Router>
@@ -58,7 +59,11 @@ export const App = () => {
         <Route element={<ProtectRouter role="client" />}>
           <Route
             path="/client/scheduled_training"
-            element={<ScheduledTrainings />}
+            element={<TrainingListByClient />}
+          />
+          <Route
+            path="/client/workout/:training_id"
+            element={<WorkoutView />}
           />
         </Route>
         <Route path="client/login" element={<Login_client />} />

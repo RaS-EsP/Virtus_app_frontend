@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
-import { useIsAuthJwt } from "../hooks/useIsAuthJwt";
+import { useIsAuthJwt } from "./trainer/hooks/useIsAuthJwt";
 export function ProtectRouter(props: any) {
   if (props.role != window.localStorage.getItem("role")) {
     return <Navigate to={"/no_authorizaded"} />;

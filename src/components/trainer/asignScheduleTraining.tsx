@@ -1,20 +1,19 @@
 import React, { useContext } from "react";
-import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";
-import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
+import { useGetTrainingTemplatesByTrainer } from "./hooks/useGetTrainingTemplates";
+import { useIsAuthJwt } from "./hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
-import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
+import { useGetClientsByTrainer } from "./hooks/useGetClientsByTrainer";
 import { Client, TrainingList } from "../../Interfaces";
 import { Training2 } from "../../Interfaces";
-import { useAsignScheduleTraining } from "../../hooks/useAsignScheduleTraining";
+import { useAsignScheduleTraining } from "./hooks/useAsignScheduleTraining";
 
 export function AsignScheduleTraining() {
   const { clients } = useGetClientsByTrainer();
-  const { trainings } = useGetTrainingsByTrainer();
+  const { trainings } = useGetTrainingTemplatesByTrainer();
 
   const HandleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const fields = Object.fromEntries(new window.FormData(event.currentTarget));
-
     if (fields.client == "" || fields.training == "" || fields.date == "") {
       return;
     }

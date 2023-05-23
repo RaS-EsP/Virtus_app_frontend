@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { getAuthToken } from "./useIsAuthJwt";
-import { URLS } from "../urls";
-import { TrainingDetails } from "../Interfaces";
-export function useCreateTraining(trainingDetails: TrainingDetails) {
+import { URLS } from "../../../urls";
+import { TrainingDetails } from "../../../Interfaces";
+export function useCreateTrainingTemplate(trainingDetails: TrainingDetails) {
   useEffect(() => {
     if (
       !trainingDetails.trainingName ||
@@ -15,7 +15,7 @@ export function useCreateTraining(trainingDetails: TrainingDetails) {
     const createTraining = async () => {
       try {
         const FetchCreateTrainingWithDetails = await axios.post(
-          `${URLS.domain}/training/create_with_detail_views`,
+          `${URLS.domain}/trainingTemplate/create`,
           { trainingDetails },
           {
             headers: {

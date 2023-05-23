@@ -1,8 +1,8 @@
 import React from "react";
 import { getTrainingDetailsInterface } from "../../Interfaces";
-import { useGetTrainingDetailsbyTrainingId } from "../../hooks/useGetTrainingDetailsbyTrainingId";
+import { useGetTrainingDetailsbyTrainingTemplateId } from "./hooks/useGetTrainingDetailsbyTrainingId";
 export const TrainingsDetailsView = () => {
-  const { trainingsDetails } = useGetTrainingDetailsbyTrainingId();
+  const { trainingsDetails } = useGetTrainingDetailsbyTrainingTemplateId();
 
   return (
     <div>

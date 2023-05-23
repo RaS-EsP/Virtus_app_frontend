@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
+import { useGetExercisesByTrainer } from "./hooks/useGetExercises";
 import "../../styles/create_exercises.css";
 import {
   Training,
@@ -11,10 +11,10 @@ import {
 import {
   RenderEmptyTableWithoutExerciseDetails,
   RenderTableWithExerciseDetail,
-} from "./services/RenderTrainingCreate";
-import { useCreateTraining } from "../../hooks/useCreateTraining";
-import { RenderExercisesListWithButton } from "./services/RenderExerciseList";
-import { useGetCategories } from "../../hooks/useGetCategories";
+} from "./renders/RenderTrainingCreate";
+import { useCreateTrainingTemplate } from "./hooks/useCreateTraining";
+import { RenderExercisesListWithButton } from "./renders/RenderExerciseList";
+import { useGetCategories } from "./hooks/useGetCategories";
 export const Create_training = () => {
   const { exercises } = useGetExercisesByTrainer();
   const { categories } = useGetCategories();
@@ -68,12 +68,12 @@ export const Create_training = () => {
       trainingDescription: inputFormValueTraining.description,
       exerciseDetails: ExercisesDetailTable.map(
         (exercise: Exercise, index) => ({
-          exerciseId: exercise.id,
+          exercise_id: exercise.id,
           sets: parseInt(
             (document.getElementById(`setsId${index}`) as HTMLInputElement)
               .value
           ),
-          reps: parseInt(
+          repetitions: parseInt(
             (document.getElementById(`repsId${index}`) as HTMLInputElement)
               .value
           ),
@@ -114,7 +114,7 @@ export const Create_training = () => {
     }
   });
 
-  useCreateTraining(trainingDetails);
+  useCreateTrainingTemplate(trainingDetails);
 
   return (
     <div>

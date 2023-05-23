@@ -1,11 +1,11 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
-import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
+import { useIsAuthJwt } from "./hooks/useIsAuthJwt";
 import { Navigate } from "react-router-dom";
-import { useGetTrainingsByTrainer } from "../../hooks/useGetTrainings";
+import { useGetTrainingTemplatesByTrainer } from "./hooks/useGetTrainingTemplates";
 import { TrainingList } from "../../Interfaces";
-import { RenderTrainingList } from "./services/RenderTrainingList";
+import { RenderTrainingList } from "./renders/RenderTrainingList";
 export const TrainingsView = () => {
-  const { trainings } = useGetTrainingsByTrainer();
+  const { trainings } = useGetTrainingTemplatesByTrainer();
   const [trainingsListFiltered, setTrainingListFiltered] = useState<
     TrainingList[]
   >([]);

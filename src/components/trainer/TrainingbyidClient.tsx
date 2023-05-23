@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import React from "react";
-import { useGetAllTrainingsClient } from "../../hooks/useGetAllTrainingsClient";
+import { useGetAllTrainingsClient } from "./hooks/useGetAllTrainingsClient";
 import { Training } from "../../Interfaces";
 import { URLS } from "../../urls";
 interface TraininingInfo {
@@ -27,7 +27,7 @@ export function TrainingbyidClient() {
           <a
             href={`${URLS.domain_client}/trainer/Schedule_training/${training.training_id}`}
           >
-            {training.training.name}
+            {training.name}
           </a>
 
           <span style={{ marginLeft: 4 }}>{training.date}</span>

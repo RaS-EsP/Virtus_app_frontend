@@ -1,5 +1,5 @@
 import React from "react";
-import { getAuthRole, getAuthToken } from "../hooks/useIsAuthJwt";
+import { getAuthRole, getAuthToken } from "./trainer/hooks/useIsAuthJwt";
 import { Trainer_home } from "./trainer/trainer_home";
 import { Client_home } from "./client/client_home";
 export const Home = () => {

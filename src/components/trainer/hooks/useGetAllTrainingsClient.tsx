@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
-import { URLS } from "../urls";
+import { URLS } from "../../../urls";
 import { getAuthToken } from "./useIsAuthJwt";
 import { useParams } from "react-router-dom";
-import { Training } from "../Interfaces";
+import { Training } from "../../../Interfaces";
 
 export function useGetAllTrainingsClient() {
   const [all_trainings_client, setTrainings] = useState<Training[]>([]);
@@ -12,7 +12,7 @@ export function useGetAllTrainingsClient() {
     const getTrainings = async () => {
       try {
         const trainingFetch = await axios.get(
-          `${URLS.domain}/scheduled_training/get_trainings_by_client`,
+          `${URLS.domain}/training/get_trainings`,
 
           {
             params: { client_id: id },
@@ -22,7 +22,7 @@ export function useGetAllTrainingsClient() {
             },
           }
         );
-        setTrainings(trainingFetch.data.data.ScheduledTraining);
+        setTrainings(trainingFetch.data.data.trainings);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);

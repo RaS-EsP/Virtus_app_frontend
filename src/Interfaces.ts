@@ -24,9 +24,9 @@ export interface TrainingDetails {
   exerciseDetails: ExerciseDetails[];
 }
 export interface ExerciseDetails {
-  exerciseId: string;
+  exercise_id: string;
   sets: number;
-  reps: number;
+  repetitions: number;
   rir: number;
   rest: number;
   weight: number;

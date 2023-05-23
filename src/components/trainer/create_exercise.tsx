@@ -8,12 +8,12 @@ import React, {
 import axios, { AxiosError } from "axios";
 import { Navigate } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { RenderExerciseCreateForm } from "./services/RenderExerciseCreateForm";
-import { RenderExerciseList } from "./services/RenderExerciseList";
-import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
+import { RenderExerciseCreateForm } from "./renders/RenderExerciseCreateForm";
+import { RenderExerciseList } from "./renders/RenderExerciseList";
+import { useIsAuthJwt } from "./hooks/useIsAuthJwt";
 import { URLS } from "../../urls";
 import { Exercise } from "../../Interfaces";
-import { getAuthToken } from "../../hooks/useIsAuthJwt";
+import { getAuthToken } from "./hooks/useIsAuthJwt";
 
 export const Create_Exercise = () => {
   const [renderFormState, setFormState] = useState(false);

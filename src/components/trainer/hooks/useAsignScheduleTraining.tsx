@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
-import { Client } from "../Interfaces";
+import { Client } from "../../../Interfaces";
 import { getAuthToken } from "./useIsAuthJwt";
-import { ScheduledTrainings } from "../components/client/Scheduled_trainings";
 interface Fields {
   client?: string;
   training?: string;
@@ -14,10 +13,10 @@ export const useAsignScheduleTraining = (fields: Fields) => {
     try {
       const DateUtc = new Date(fields.date).toISOString();
       const ScheduleTraining = await axios.post(
-        "http://localhost:3050/scheduled_training/create",
+        "http://localhost:3050/training/create_from_template",
         {
           client_id: fields.client,
-          training_id: fields.training,
+          training_template_id: fields.training,
           date: DateUtc,
         },
         {

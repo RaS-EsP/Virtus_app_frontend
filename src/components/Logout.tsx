@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { useIsAuthJwt } from "../hooks/useIsAuthJwt";
+import { useIsAuthJwt } from "./trainer/hooks/useIsAuthJwt";
 
 export const Logout = () => {
   useEffect(() => {

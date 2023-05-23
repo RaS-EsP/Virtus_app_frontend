@@ -5,7 +5,7 @@ import {
   getAuthRole,
   getAuthToken,
   useIsAuthJwt,
-} from "../../hooks/useIsAuthJwt";
+} from "../trainer/hooks/useIsAuthJwt";
 
 export const Header = () => {
   const padding = {

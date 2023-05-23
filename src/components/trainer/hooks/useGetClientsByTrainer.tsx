@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios, { AxiosRequestConfig, AxiosError } from "axios";
-import { Client } from "../Interfaces";
+import { Client } from "../../../Interfaces";
 import { getAuthToken } from "./useIsAuthJwt";
 export const useGetClientsByTrainer = () => {
   const [clients, setClients] = useState<Client[]>([]);

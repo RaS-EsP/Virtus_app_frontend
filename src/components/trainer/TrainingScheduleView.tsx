@@ -1,7 +1,7 @@
 import React from "react";
-import { useGetTrainingDetailsbyTrainingId } from "../../hooks/useGetTrainingDetailsbyTrainingId";
-import { RenderTrainingDetails } from "./services/RenderTrainingDetails";
+import { useGetTrainingDetailsbyTrainingTemplateId } from "./hooks/useGetTrainingDetailsbyTrainingId";
+import { RenderTrainingDetails } from "./renders/RenderTrainingDetails";
 export function TrainingScheduleView() {
-  const { trainingsDetails } = useGetTrainingDetailsbyTrainingId();
+  const { trainingsDetails } = useGetTrainingDetailsbyTrainingTemplateId();
   return <RenderTrainingDetails trainingsDetails={trainingsDetails} />;
 }

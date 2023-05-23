@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Exercise } from "../../../Interfaces";
 export const RenderExerciseList = ({ exercises }: { exercises: any[] }) => {
   return (
@@ -31,9 +31,10 @@ export const RenderExercisesListWithButton = ({
   exercises: any;
   setExercisesDetailTable: SetExercisesDetailTable;
 }) => {
+  const [sliceNumber, setSliceNumber] = useState(2);
   return (
     <div className="containerExercises">
-      {exercises.map((exercise: Exercise) => (
+      {exercises.slice(0, sliceNumber).map((exercise: Exercise) => (
         <div key={exercise.id}>
           <h2>{exercise.name}</h2>
           <iframe
@@ -60,6 +61,15 @@ export const RenderExercisesListWithButton = ({
           </div>
         </div>
       ))}
+      {exercises.length > sliceNumber ? (
+        <button
+          onClick={() => {
+            setSliceNumber((prevState) => prevState + 4);
+          }}
+        >
+          SHOW MORE
+        </button>
+      ) : null}
     </div>
   );
 };

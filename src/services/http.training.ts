@@ -2,7 +2,10 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { URLS } from "../urls";
 import { Training } from "../Interfaces";
 import { TrainingList } from "../Interfaces";
-import { getAuthToken, useIsAuthJwt } from "../hooks/useIsAuthJwt";
+import {
+  getAuthToken,
+  useIsAuthJwt,
+} from "../components/trainer/hooks/useIsAuthJwt";
 type TrainingsResponse = {
   data: {
     trainings: TrainingList[];

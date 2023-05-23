@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
-import { useIsAuthJwt } from "../../hooks/useIsAuthJwt";
-import { getAuthToken } from "../../hooks/useIsAuthJwt";
+import { useIsAuthJwt } from "./hooks/useIsAuthJwt";
+import { getAuthToken } from "./hooks/useIsAuthJwt";
 export const Create_category = (props: any) => {
   const [inputForm, setInputForm] = useState({
     Name: "",
