@@ -4,7 +4,7 @@ import React from "react";
 import { Login } from "./components/trainer/login";
 import { Signup } from "./components/trainer/signup";
 import { ErrorPage } from "./components/error_page/error-page";
-import { Header } from "./components/header/header";
+import { NavBar } from "./components/Navbar/Navbar";
 import { ClientsByTrainer } from "./components/trainer/clients";
 import { Logout } from "./components/Logout";
 import { CreatingHash } from "./components/trainer/creatingHash";
@@ -25,7 +25,7 @@ import { WorkoutView } from "./components/client/workout_view";
 export const App = () => {
   return (
     <Router>
-      <Header />
+      <NavBar />
       <Routes>
         <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
 
