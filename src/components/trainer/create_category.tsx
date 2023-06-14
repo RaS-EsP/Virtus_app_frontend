@@ -38,7 +38,7 @@ export const Create_category = (props: any) => {
     }
   };
   return (
-    <div className="container">
+    <div className="">
       <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}

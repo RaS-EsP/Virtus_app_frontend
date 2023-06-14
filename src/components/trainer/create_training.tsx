@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { useGetExercisesByTrainer } from "./hooks/useGetExercises";
-import "../../styles/create_exercises.css";
 import {
   Training,
   Exercise,

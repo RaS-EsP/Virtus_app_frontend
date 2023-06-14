@@ -6,7 +6,7 @@ export const Home = () => {
   const token = getAuthToken();
   const role = getAuthRole();
   return (
-    <div>
+    <>
       {token ? (
         role == "trainer" ? (
           <Trainer_home />
@@ -22,6 +22,6 @@ export const Home = () => {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };

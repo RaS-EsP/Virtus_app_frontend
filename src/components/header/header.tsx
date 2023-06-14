@@ -1,110 +1,62 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
-import "../../styles/header.css";
+import React, { useContext, useState, useRef, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
+import Logo from "../../img//VIRTUS transparentazo blanco.png";
 import {
   getAuthRole,
   getAuthToken,
   useIsAuthJwt,
 } from "../trainer/hooks/useIsAuthJwt";
+import { TokenAndTrainerNav } from "./token&trainer";
+import { TokenAndClient } from "./token&client copy";
+import { NotTokenNav } from "./NotToken";
+import { BurgerButton, SettingsButton, SettingsMenu } from "./NavButtons";
+import { CloseNavButton } from "./NavButtons";
 
-export const Header = () => {
-  const padding = {
-    padding: 5,
-  };
-
+export const Header = ({
+  SetIsOpenNav,
+  IsOpenNav,
+}: {
+  SetIsOpenNav: any;
+  IsOpenNav: any;
+}) => {
   const token = getAuthToken();
   const role = getAuthRole();
+
+  const HandleNavState = () => {
+    SetIsOpenNav(!IsOpenNav);
+  };
+
   return (
-    <header>
-      {token ? (
-        role == "trainer" ? (
-          <div className="header">
-            {/* //<div>token y trainer</div> */}
-            <Link style={padding} to="/">
-              Home
-            </Link>
-            <Link style={padding} to="/trainer/clients">
-              Clients
-            </Link>
-            <Link style={padding} to="/client_invitation">
-              Client Invitation
-            </Link>
-            <Link style={padding} to="/trainer/create_training">
-              Create training
-            </Link>
-            <Link style={padding} to="/trainer/trainings">
-              Trainings
-            </Link>
-            <Link style={padding} to="trainer/create_exercise">
-              Create Exercises
-            </Link>
-            <Link style={padding} to="/trainer/asign_schedule_training">
-              Asign Scheduled training
-            </Link>
-            <Link style={padding} to="/logout">
-              Logout
-            </Link>
-          </div>
+    <section className="sticky flex flex-col md:flex-row md:p-1">
+      <div id="logo" className="md:w-1/6 w-full flex justify-center py-1 h-12">
+        <a className="flex justify-center w-20 " href="/">
+          <img alt="Virtus Logo" src={Logo} className="hover:cursor-pointer " />
+        </a>
+        <div
+          onClick={HandleNavState}
+          className="absolute cursor-pointer left-2 top-4 md:hidden"
+        >
+          {IsOpenNav ? <CloseNavButton /> : <BurgerButton />}
+        </div>
+      </div>
+      <div
+        className={`w-full px-1 ${
+          IsOpenNav ? "visible max-h-screen py-1" : "max-h-0 invisible"
+        } transition-all ease-in-out duration-100 overflow-hidden bg-SecondColor md:bg-FirstColor gap-2 flex md:max-h-14 md:visible flex-col md:flex-row justify-around items-center text-center`}
+      >
+        {token ? (
+          role == "trainer" ? (
+            <TokenAndTrainerNav />
+          ) : (
+            <TokenAndClient />
+          )
         ) : (
-          // <div>token y client</div>
-          <div className="header">
-            <Link style={padding} to="/">
-              Home
-            </Link>
-            <Link style={padding} to="/client/scheduled_training">
-              Scheduled training
-            </Link>
-            <Link style={padding} to="/logout">
-              Logout
-            </Link>
-          </div>
-        )
-      ) : (
-        <div></div>
-      )}
-    </header>
+          <NotTokenNav />
+        )}
+      </div>
+      <div className="w-1/12 absolute md:static right-2 top-4 md:flex md:justify-center md:items-center  ">
+        <SettingsMenu />
+      </div>
+    </section>
   );
 };
-// };
-// <div className="header">
-// <Link style={padding} to="/">
-//   home
-// </Link>
-/* {token ? (
-  <div>
-    <Link style={padding} to="/trainer/clients">
-      Clients
-    </Link>
-
-    <Link style={padding} to="/client_invitation">
-      Client Invitation
-    </Link>
-    <Link style={padding} to="/trainer/create_training">
-      Create training
-    </Link>
-    <Link style={padding} to="/trainer/trainings">
-      Trainings
-    </Link>
-    <Link style={padding} to="trainer/create_exercise">
-      Create Exercises
-    </Link>
-    <Link style={padding} to="/logout">
-      Logout
-    </Link>
-    <Link style={padding} to="/client/scheduled_training">
-      (Client)Scheduled training
-    </Link>
-    <Link style={padding} to="/trainer/asign_schedule_training">
-      Asign Scheduled training
-    </Link>
-  </div>
-) : (
-  <div>
-    <Link style={padding} to="/trainer/login">
-      login
-    </Link>
-    <Link style={padding} to="/trainer/signup">
-      signup
-    </Link>
-  </div>
-)} */

@@ -1,7 +1,0 @@
-.header {
-  display: flex;
-  justify-content: flex-start; /* adjust to left or center as needed */
-  align-items: center;
-  flex-direction: row;
-  padding: 0 10px; /* add horizontal padding */
-}

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../../styles/login.css";
 import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -40,7 +39,7 @@ export const Login = () => {
     }
   };
   return (
-    <div className="container">
+    <div className="">
       <form onSubmit={handleSubmit}>
         <input
           onChange={handleChange}

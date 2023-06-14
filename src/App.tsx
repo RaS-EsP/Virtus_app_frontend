@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./components/home";
-import React from "react";
+import React, { useState } from "react";
 import { Login } from "./components/trainer/login";
 import { Signup } from "./components/trainer/signup";
 import { ErrorPage } from "./components/error_page/error-page";
@@ -23,58 +23,83 @@ import { TrainingbyidClient } from "./components/trainer/TrainingbyidClient";
 import { TrainingScheduleView } from "./components/trainer/TrainingScheduleView";
 import { WorkoutView } from "./components/client/workout_view";
 export const App = () => {
+  const [IsOpenNav, SetIsOpenNav] = useState(false);
+
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
+    <>
+      <Router>
+        <div>
+          <nav className="bg-FirstColor text-FourthColor ">
+            <Header SetIsOpenNav={SetIsOpenNav} IsOpenNav={IsOpenNav} />
+          </nav>
+          <div
+            className="bg-FourthColor h-screen "
+            onClick={() => SetIsOpenNav(false)}
+          >
+            <Routes>
+              <Route path="/" element={<Home />} errorElement={<ErrorPage />} />
 
-        {/* TRAINER */}
-        <Route path="/trainer/signup" element={<Signup />} />
-        <Route path="/trainer/login" element={<Login />} />
+              {/* TRAINER */}
+              <Route path="/trainer/signup" element={<Signup />} />
+              <Route path="/trainer/login" element={<Login />} />
 
-        <Route element={<ProtectRouter role="trainer" />}>
-          <Route path="trainer/create_category" element={<Create_category />} />
-          <Route path="trainer/clients" element={<ClientsByTrainer />} />
-          <Route path="/trainer/clients/:id" element={<TrainingbyidClient />} />
-          <Route path="trainer/create_exercise" element={<Create_Exercise />} />
-          <Route path="trainer/create_training" element={<Create_training />} />
-          <Route path="trainer/trainings" element={<TrainingsView />} />
-          <Route
-            path="trainer/training_details/:id"
-            element={<TrainingsDetailsView />}
-          />
-          <Route
-            path="trainer/Schedule_training/:id"
-            element={<TrainingScheduleView />}
-          />
-          <Route
-            path="trainer/asign_schedule_training"
-            element={<AsignScheduleTraining />}
-          />
-          <Route path="client_invitation" element={<CreatingHash />} />
-        </Route>
-        {/* TRAINER */}
-        {/* CLIENT  */}
-        <Route element={<ProtectRouter role="client" />}>
-          <Route
-            path="/client/scheduled_training"
-            element={<TrainingListByClient />}
-          />
-          <Route
-            path="/client/workout/:training_id"
-            element={<WorkoutView />}
-          />
-        </Route>
-        <Route path="client/login" element={<Login_client />} />
-        <Route path="client/signup/:code" element={<SignUpClient />} />
+              <Route element={<ProtectRouter role="trainer" />}>
+                <Route
+                  path="trainer/create_category"
+                  element={<Create_category />}
+                />
+                <Route path="trainer/clients" element={<ClientsByTrainer />} />
+                <Route
+                  path="/trainer/clients/:id"
+                  element={<TrainingbyidClient />}
+                />
+                <Route
+                  path="trainer/create_exercise"
+                  element={<Create_Exercise />}
+                />
+                <Route
+                  path="trainer/create_training"
+                  element={<Create_training />}
+                />
+                <Route path="trainer/trainings" element={<TrainingsView />} />
+                <Route
+                  path="trainer/training_details/:id"
+                  element={<TrainingsDetailsView />}
+                />
+                <Route
+                  path="trainer/Schedule_training/:id"
+                  element={<TrainingScheduleView />}
+                />
+                <Route
+                  path="trainer/asign_schedule_training"
+                  element={<AsignScheduleTraining />}
+                />
+                <Route path="client_invitation" element={<CreatingHash />} />
+              </Route>
+              {/* TRAINER */}
+              {/* CLIENT  */}
+              <Route element={<ProtectRouter role="client" />}>
+                <Route
+                  path="/client/scheduled_training"
+                  element={<TrainingListByClient />}
+                />
+                <Route
+                  path="/client/workout/:training_id"
+                  element={<WorkoutView />}
+                />
+              </Route>
+              <Route path="client/login" element={<Login_client />} />
+              <Route path="client/signup/:code" element={<SignUpClient />} />
 
-        {/* CLIENT  */}
-        <Route path="/logout" element={<Logout />} />
+              {/* CLIENT  */}
+              <Route path="/logout" element={<Logout />} />
 
-        <Route path="*" element={<ErrorPage />} />
-        <Route path="/no_authorizaded" element={<No_Authorizaded />} />
-      </Routes>
-    </Router>
+              <Route path="*" element={<ErrorPage />} />
+              <Route path="/no_authorizaded" element={<No_Authorizaded />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </>
   );
 };
