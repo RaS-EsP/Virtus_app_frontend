@@ -5,7 +5,7 @@ import { Login } from "./components/trainer/login";
 import { Signup } from "./components/trainer/signup";
 import { ErrorPage } from "./components/error_page/error-page";
 import { Header } from "./components/header/header";
-import { ClientsByTrainer } from "./components/trainer/clients";
+import { ClientsByTrainer } from "./components/trainer/views/Clients/clients";
 import { Logout } from "./components/Logout";
 import { CreatingHash } from "./components/trainer/creatingHash";
 import { SignUpClient } from "./components/client/signup_client";

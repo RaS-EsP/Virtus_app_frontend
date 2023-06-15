@@ -90,18 +90,18 @@ export const SettingsMenu = () => {
       <div
         className={`${
           IsOpenSettingsMenu ? "opacity-100 visible " : "opacity-0 invisible "
-        } transition-all ease-in-out duration-300 absolute z-10 top-5 right-0  bg-white text-FirstColor text-sm rounded-md drop-shadow-lg  w-32 break-words`}
+        } transition-all ease-in-out duration-300 absolute z-5 top-5 right-0  bg-white text-FirstColor text-sm rounded-md drop-shadow-lg  w-32 break-words`}
       >
         <ul>
           {getAuthToken() ? (
             <>
-              <li className="hover:bg-FourthColor rounded-t-md border-t border-FourthColor cursor-pointer">
+              <li className="hover:bg-gray-100 rounded-t-md border-t border-FourthColor cursor-pointer">
                 <a className="block p-2">Example</a>
               </li>
-              <li className="hover:bg-FourthColor  cursor-pointer">
+              <li className="hover:bg-gray-100  cursor-pointer">
                 <a className="block p-2">Example</a>
               </li>
-              <li className="hover:bg-FourthColor rounded-b-md border-t border-FourthColor cursor-pointer ">
+              <li className="hover:bg-gray-100 rounded-b-md border-t border-FourthColor cursor-pointer ">
                 <a className="block p-2" href="/logout">
                   Logout
                 </a>
