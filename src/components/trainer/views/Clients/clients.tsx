@@ -7,8 +7,7 @@ import { CloseNavButton } from "../../../header/NavButtons";
 import { DataTableOfClients } from "./components/DataTableofClients";
 import { ModalAddClient } from "./components/ModalAddClient";
 import { Transition } from "@headlessui/react";
-import { transitionOpacity } from "../../../../transitions/transitions";
-
+import { transitionClases } from "../../../../transitions/transitions";
 export const ClientsByTrainer = () => {
   const { clients, Isloading } = useGetClientsByTrainer();
   const [AddClientModal, SetAddClientModal] = useState(false);
@@ -31,12 +30,14 @@ export const ClientsByTrainer = () => {
         )}
       </div>
       {/* MODAL */}
-      <Transition show={AddClientModal} {...transitionOpacity}>
-        <ModalAddClient
-          AddClientModal={AddClientModal}
-          HandleAddClientModal={HandleAddClientModal}
-        />
-      </Transition>
+      <div>
+        <Transition show={AddClientModal} {...transitionClases.opacity2}>
+          <ModalAddClient
+            AddClientModal={AddClientModal}
+            HandleAddClientModal={HandleAddClientModal}
+          />
+        </Transition>
+      </div>
       {/* MODAL */}
     </>
   );
