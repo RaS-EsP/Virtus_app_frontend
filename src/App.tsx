@@ -7,7 +7,6 @@ import { ErrorPage } from "./components/error_page/error-page";
 import { Header } from "./components/header/header";
 import { ClientsByTrainer } from "./components/trainer/views/Clients/clients";
 import { Logout } from "./components/Logout";
-import { CreatingHash } from "./components/trainer/creatingHash";
 import { SignUpClient } from "./components/client/signup_client";
 import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
@@ -29,11 +28,11 @@ export const App = () => {
     <>
       <Router>
         <div>
-          <nav className="bg-FirstColor text-FourthColor ">
+          <nav className="bg-FirstColor text-white ">
             <Header SetIsOpenNav={SetIsOpenNav} IsOpenNav={IsOpenNav} />
           </nav>
           <div
-            className="bg-FourthColor h-screen "
+            className="bg-FourthColor min-h-screen min-w-screen "
             onClick={() => SetIsOpenNav(false)}
           >
             <Routes>
@@ -74,7 +73,6 @@ export const App = () => {
                   path="trainer/asign_schedule_training"
                   element={<AsignScheduleTraining />}
                 />
-                <Route path="client_invitation" element={<CreatingHash />} />
               </Route>
               {/* TRAINER */}
               {/* CLIENT  */}

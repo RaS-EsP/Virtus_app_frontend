@@ -12,12 +12,6 @@ export const TokenAndTrainerNav = () => {
       </a>
       <a
         className="hover:bg-ThirdColor hover:text-FirstColor md:hover:bg-FirstColor md:hover:text-FourthColor w-full md:w-fit "
-        href="/client_invitation"
-      >
-        Client Invitation
-      </a>
-      <a
-        className="hover:bg-ThirdColor hover:text-FirstColor md:hover:bg-FirstColor md:hover:text-FourthColor w-full md:w-fit "
         href="/trainer/create_training"
       >
         Create training

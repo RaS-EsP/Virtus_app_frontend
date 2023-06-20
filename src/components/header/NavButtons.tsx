@@ -90,7 +90,7 @@ export const SettingsMenu = () => {
       <div
         className={`${
           IsOpenSettingsMenu ? "opacity-100 visible " : "opacity-0 invisible "
-        } transition-all ease-in-out duration-300 absolute z-5 top-5 right-0  bg-white text-FirstColor text-sm rounded-md drop-shadow-lg  w-32 break-words`}
+        } transition-all ease-in-out duration-300 absolute z-20 top-5 right-0  bg-white text-Fo text-sm rounded-md drop-shadow-lg  w-32 break-words text-FirstColor`}
       >
         <ul>
           {getAuthToken() ? (
