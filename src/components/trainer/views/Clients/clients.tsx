@@ -1,9 +1,7 @@
-import React, { useState, useRef, useEffect, Children } from "react";
+import React, { useState } from "react";
 import { LoadingSpinner } from "../../../LoadingSpinner";
 import { useGetClientsByTrainer } from "../../hooks/useGetClientsByTrainer";
-import { Client } from "../../../../Interfaces";
-import { DotsMenu } from "../../../../img/icons/3DotsMenu";
-import { CloseNavButton } from "../../../header/NavButtons";
+
 import { DataTableOfClients } from "./components/DataTableofClients";
 import { ModalAddClient } from "./components/ModalAddClient";
 import { Transition } from "@headlessui/react";
@@ -15,6 +13,7 @@ export const ClientsByTrainer = () => {
   const HandleAddClientModal = () => {
     SetAddClientModal(!AddClientModal);
   };
+
   return (
     <>
       <div className=" flex justify-center item flex-col min-h-fit p-10  ">

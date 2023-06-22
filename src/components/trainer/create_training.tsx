@@ -12,7 +12,7 @@ import {
   RenderTableWithExerciseDetail,
 } from "./renders/RenderTrainingCreate";
 import { useCreateTrainingTemplate } from "./hooks/useCreateTraining";
-import { RenderExercisesListWithButton } from "./renders/RenderExerciseList";
+import { RenderExercisesListWithButton } from "./views/Create_exercises/components/RenderExerciseList";
 import { useGetCategories } from "./hooks/useGetCategories";
 export const Create_training = () => {
   const { exercises } = useGetExercisesByTrainer();

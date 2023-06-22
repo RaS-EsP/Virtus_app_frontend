@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { URLS } from "../../../urls";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getAuthToken } from "./useIsAuthJwt";
+import { Exercise } from "../../../Interfaces";
 export const useGetExercisesByTrainer = () => {
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [AreExercisesLoaded, setAreExercisesLoaded] = useState(false);
   useEffect(() => {
     const GetExercises = async () => {
       try {
@@ -17,6 +19,7 @@ export const useGetExercisesByTrainer = () => {
           }
         );
         setExercises(exercisesFetch.data.data.exercises);
+        setAreExercisesLoaded(true);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
@@ -25,5 +28,5 @@ export const useGetExercisesByTrainer = () => {
     GetExercises();
   }, []);
 
-  return { exercises };
+  return { exercises, AreExercisesLoaded, setExercises };
 };

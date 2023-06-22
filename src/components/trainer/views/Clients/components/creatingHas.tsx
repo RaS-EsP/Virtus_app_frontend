@@ -1,7 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
-import { Navigate } from "react-router-dom";
-import { useIsAuthJwt } from "../../../hooks/useIsAuthJwt";
 import { getAuthToken } from "../../../hooks/useIsAuthJwt";
 import useClipboard from "react-use-clipboard";
 export const CreatingHashForClient = () => {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Exercise } from "../../../Interfaces";
+import { Exercise } from "../../../../../Interfaces";
 export const RenderExerciseList = ({ exercises }: { exercises: any[] }) => {
   return (
     <ul>
@@ -33,7 +33,8 @@ export const RenderExercisesListWithButton = ({
 }) => {
   const [sliceNumber, setSliceNumber] = useState(2);
   return (
-    <div className="containerExercises">
+    <div className="">
+      hola
       {exercises.slice(0, sliceNumber).map((exercise: Exercise) => (
         <div key={exercise.id}>
           <h2>{exercise.name}</h2>
@@ -61,15 +62,16 @@ export const RenderExercisesListWithButton = ({
           </div>
         </div>
       ))}
-      {exercises.length > sliceNumber ? (
+      {exercises.length > sliceNumber && (
         <button
+          className="bg-white w-full"
           onClick={() => {
             setSliceNumber((prevState) => prevState + 4);
           }}
         >
           SHOW MORE
         </button>
-      ) : null}
+      )}
     </div>
   );
 };

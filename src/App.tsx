@@ -10,7 +10,7 @@ import { Logout } from "./components/Logout";
 import { SignUpClient } from "./components/client/signup_client";
 import { Login_client } from "./components/client/login_client";
 import { Create_category } from "./components/trainer/create_category";
-import { Create_Exercise } from "./components/trainer/create_exercise";
+import { Create_Exercise } from "./components/trainer/views/Create_exercises/create_exercise";
 import { Create_training } from "./components/trainer/create_training";
 import { TrainingsView } from "./components/trainer/get_trainings";
 import { TrainingsDetailsView } from "./components/trainer/getTrainingDetails";

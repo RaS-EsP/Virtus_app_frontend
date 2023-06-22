@@ -4,6 +4,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getAuthToken } from "./useIsAuthJwt";
 export const useGetCategories = () => {
   const [categories, setCategories] = useState([]);
+  const [IsCategoriesLoaded, setIsCategoriesLoaded] = useState(false);
   useEffect(() => {
     const GetCategories = async () => {
       try {
@@ -17,6 +18,7 @@ export const useGetCategories = () => {
           }
         );
         setCategories(categoriesFetch.data.data.Categories);
+        setIsCategoriesLoaded(true);
       } catch (error) {
         const err = error as AxiosError;
         console.log(err.response?.data);
@@ -25,5 +27,5 @@ export const useGetCategories = () => {
     GetCategories();
   }, []);
 
-  return { categories };
+  return { categories, IsCategoriesLoaded };
 };
