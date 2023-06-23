@@ -58,10 +58,7 @@ export interface ExerciseName {
   description: string;
   video_link: string;
 }
-export interface Categories {
-  id: string;
-  name: string;
-}
+
 export interface Scheduled_trainings {
   id: string;
   client_id: string;

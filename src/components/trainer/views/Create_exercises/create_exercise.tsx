@@ -110,17 +110,12 @@ export const Create_Exercise = () => {
             setSelected={setSelected}
             selected={selected}
           />
-          <div>
-            <input
-              type="text"
-              name="filter"
-              onChange={(e) => filterExercises(e.target.value)}
-            ></input>
-          </div>
+
           <RenderExerciseList
             exercises={
               filteredExercises.length > 0 ? filteredExercises : exercises
             }
+            filterExercises={filterExercises}
           />
         </div>
       ) : (

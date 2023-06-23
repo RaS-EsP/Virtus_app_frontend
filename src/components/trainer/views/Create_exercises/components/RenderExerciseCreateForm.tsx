@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Categories, Category } from "../../../../../Interfaces";
+import { Category } from "../../../../../Interfaces";
 import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useGetCategories } from "../../../hooks/useGetCategories";
@@ -39,7 +39,7 @@ export const RenderExerciseCreateForm = ({
         <div className="relative z-0  mb-6 group">
           <input
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent  border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
-            type="text"
+            type="url"
             value={inputForm.video_link}
             onChange={handleChangeForm}
             name="video_link"

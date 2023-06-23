@@ -6,6 +6,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      brightness: ["hover"],
       colors: {
         FirstColor: "#27374D",
         SecondColor: "#526D82",
