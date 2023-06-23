@@ -27,7 +27,7 @@ export const Header = ({
   };
 
   return (
-    <section className="sticky flex flex-col md:flex-row md:p-1">
+    <section className=" flex flex-col md:flex-row md:p-1">
       <div id="logo" className="md:w-1/6 w-full flex justify-center py-1 h-12">
         <a className="flex justify-center w-20 " href="/">
           <img alt="Virtus Logo" src={Logo} className="hover:cursor-pointer " />
