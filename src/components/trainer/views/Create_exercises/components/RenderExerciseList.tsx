@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Category, Exercise } from "../../../../../Interfaces";
 import { json } from "stream/consumers";
 export const RenderExerciseList = ({
@@ -14,6 +14,7 @@ export const RenderExerciseList = ({
   ListOfFilteredCategories: [string];
   SetListOfFilteredCategories: any;
 }) => {
+  const SelectDisplayRef = useRef<any>();
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [inputCategory, setInputCategory] = useState("");
   useState([ListOfFilteredCategories]);
@@ -33,9 +34,25 @@ export const RenderExerciseList = ({
       ListOfFilteredCategories.filter((item) => item !== name)
     );
   };
+  useEffect(() => {
+    const checkIfClickedOutside = (e: any) => {
+      if (
+        SelectDisplayRef.current &&
+        !SelectDisplayRef.current.contains(e.target)
+      ) {
+        SetIsSelectCategoryOpen(false);
+      }
+    };
+    document.addEventListener("click", checkIfClickedOutside);
+    return () => {
+      document.removeEventListener("click", checkIfClickedOutside);
+    };
+    [];
+  });
+
   return (
     <>
-      <div className="rounded-xl drop-shadow-md bg-white px-5 mx-5 mb-5 py-5 ">
+      <div className="rounded-xl drop-shadow-md bg-white px-5 mx-5 mb-5 py-5  ">
         <div className="flex flex-row gap-5 justify-between">
           <div className="relative z-0 w-1/2 mb-6 group">
             <input
@@ -53,7 +70,10 @@ export const RenderExerciseList = ({
               Search for a exercise
             </label>
           </div>
-          <div className="relative z-0 w-1/2  mb-6 group">
+          <div
+            className="relative z-0 w-1/2  mb-6 group"
+            ref={SelectDisplayRef}
+          >
             <input
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
               type="text"
@@ -152,7 +172,6 @@ export const RenderExercisesListWithButton = ({
   const [sliceNumber, setSliceNumber] = useState(2);
   return (
     <div className="">
-      hola
       {exercises.slice(0, sliceNumber).map((exercise: Exercise) => (
         <div key={exercise.id}>
           <h2>{exercise.name}</h2>
