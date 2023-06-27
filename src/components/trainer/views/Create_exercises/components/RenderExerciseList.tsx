@@ -1,17 +1,43 @@
 import React, { useState } from "react";
-import { Exercise } from "../../../../../Interfaces";
+import { Category, Exercise } from "../../../../../Interfaces";
+import { json } from "stream/consumers";
 export const RenderExerciseList = ({
   exercises,
   filterExercises,
+  categories,
+  ListOfFilteredCategories,
+  SetListOfFilteredCategories,
 }: {
   exercises: Exercise[];
   filterExercises: any;
+  categories: Category[];
+  ListOfFilteredCategories: [string];
+  SetListOfFilteredCategories: any;
 }) => {
+  const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
+  const [inputCategory, setInputCategory] = useState("");
+  useState([ListOfFilteredCategories]);
+  const HandleSelectFilteredCategory = (category: string) => {
+    SetIsSelectCategoryOpen(false);
+    if (ListOfFilteredCategories.includes(category)) {
+      return;
+    }
+    SetListOfFilteredCategories((prevCategories: any) => [
+      ...prevCategories,
+      category,
+    ]);
+  };
+  const handleRemoveItem = (e: any) => {
+    const name = e.target.getAttribute("name");
+    SetListOfFilteredCategories(
+      ListOfFilteredCategories.filter((item) => item !== name)
+    );
+  };
   return (
     <>
       <div className="rounded-xl drop-shadow-md bg-white px-5 mx-5 mb-5 py-5 ">
         <div className="flex flex-row gap-5 justify-between">
-          <div className="relative z-0 w-full mb-6 group">
+          <div className="relative z-0 w-1/2 mb-6 group">
             <input
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
               type="text"
@@ -27,24 +53,63 @@ export const RenderExerciseList = ({
               Search for a exercise
             </label>
           </div>
-          <div className="relative z-0 w-full  mb-6 group">
+          <div className="relative z-0 w-1/2  mb-6 group">
             <input
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
               type="text"
-              onChange={undefined}
-              name="filter"
-              id="filter"
+              value={inputCategory}
+              onChange={(e: any) => {
+                setInputCategory(e.target.value);
+              }}
+              name="filterCategory"
+              id="filterCategory"
               placeholder=""
+              onClick={() => SetIsSelectCategoryOpen(true)}
             />
             <label
-              htmlFor="Search for a category"
+              htmlFor="Search for a exercise"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-FirstColor peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Search for a category
             </label>
+            {isSelectCategoryOpen && (
+              <ul className="bg-white overflow-y-auto  max-h-40 border-2 mt-1  rounded-md">
+                {categories.map((category: Category) => (
+                  <>
+                    {category.name
+                      .toLowerCase()
+                      .includes(inputCategory.toLowerCase()) && (
+                      <li
+                        className="hover:bg-FirstColor text-xs text-gray-500 hover:text-white p-1"
+                        key={category.id}
+                        onClick={() =>
+                          HandleSelectFilteredCategory(category.name)
+                        }
+                      >
+                        {category.name}
+                      </li>
+                    )}
+                  </>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
-
+        <div className="my-1">
+          <ul className="flex flex-wrap w-full justify-start items-center  ">
+            {ListOfFilteredCategories.map((category: string, index: number) => (
+              <li
+                className="h-5 flex items-center text-xs bg-FirstColor text-white px-2 py-1 rounded-lg m-1"
+                key={index}
+              >
+                <span>{category} </span>
+                <button name={category} onClick={handleRemoveItem}>
+                  &times;
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
         <ul className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-items-center  ">
           {exercises.map((exercise: Exercise, index: number) => (
             <li key={index}>

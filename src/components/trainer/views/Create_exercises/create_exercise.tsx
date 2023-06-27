@@ -18,6 +18,9 @@ export const Create_Exercise = () => {
   const { exercises, AreExercisesLoaded, setExercises } =
     useGetExercisesByTrainer();
   const [selected, setSelected] = useState("");
+  const [ListOfFilteredCategories, SetListOfFilteredCategories] = useState<any>(
+    []
+  );
   const [inputForm, setInputForm] = useState({
     name: "",
     video_link: "",
@@ -116,6 +119,9 @@ export const Create_Exercise = () => {
               filteredExercises.length > 0 ? filteredExercises : exercises
             }
             filterExercises={filterExercises}
+            categories={categories}
+            SetListOfFilteredCategories={SetListOfFilteredCategories}
+            ListOfFilteredCategories={ListOfFilteredCategories}
           />
         </div>
       ) : (
