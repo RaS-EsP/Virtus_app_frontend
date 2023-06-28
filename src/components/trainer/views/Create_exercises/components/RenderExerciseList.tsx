@@ -155,15 +155,22 @@ export const RenderExerciseList = ({
                     alt={`Youtube video ${exercise.video_link.split("v=")[1]}`}
                   />
                 )}
-                <div className="absolute  left-2  bottom-7 flex items-center justify-center">
+                <div className="absolute  left-2  top-1 flex items-center justify-center">
                   <h2 className="text-white text-base font-bold">
                     {exercise.name}
                   </h2>
                 </div>
-                <div className="absolute  left-2  bottom-1 flex items-center justify-center bg-FirstColor rounded-xl px-2 py-1">
-                  <h2 className="text-white text-xs font-bold">
-                    {exercise.categories[0].name}
-                  </h2>
+                <div className="absolute bottom-1 left-1">
+                  {exercise.categories.map((cat: any, index: number) => (
+                    <div
+                      key={index}
+                      className="inline-block mx-[2px]  bg-FirstColor rounded-xl px-2 py-1"
+                    >
+                      <h2 className="text-white text-xs font-bold">
+                        {cat.name}
+                      </h2>
+                    </div>
+                  ))}
                 </div>
               </div>
             </li>
