@@ -51,6 +51,7 @@ export const Create_Exercise = () => {
     ) {
       return;
     }
+
     try {
       const SubmitResponse = await axios.post(
         `${URLS.domain}/exercise/create_exercise`,
@@ -130,3 +131,4 @@ export const Create_Exercise = () => {
     </>
   );
 };
+

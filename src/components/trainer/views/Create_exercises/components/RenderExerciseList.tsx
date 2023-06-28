@@ -134,6 +134,17 @@ export const RenderExerciseList = ({
           {exercises.map((exercise: Exercise, index: number) => (
             <li key={index}>
               <div className="relative ">
+              {exercise.video_link.startsWith("https://youtu.be/") ? (
+                <img
+                  className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75"
+                  src={`https://img.youtube.com/vi/${exercise.video_link.substr(
+                    "https://youtu.be/".length
+                  )}/mqdefault.jpg`}
+                  alt={`Youtube video ${exercise.video_link.substr(
+                    "https://youtu.be/".length
+                  )}`}
+                />
+              ):(
                 <img
                   className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75   "
                   src={`https://img.youtube.com/vi/${
@@ -141,7 +152,8 @@ export const RenderExerciseList = ({
                   }/mqdefault.jpg`}
                   alt={`Youtube video ${exercise.video_link.split("v=")[1]}`}
                 />
-
+              )
+                }
                 <div className="absolute  left-2  bottom-7 flex items-center justify-center">
                   <h2 className="text-white text-base font-bold">
                     {exercise.name}
