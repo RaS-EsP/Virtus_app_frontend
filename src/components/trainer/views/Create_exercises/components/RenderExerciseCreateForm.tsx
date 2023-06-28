@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Category } from "../../../../../Interfaces";
 import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useGetCategories } from "../../../hooks/useGetCategories";
+import { forEachChild } from "typescript";
 
 export const RenderExerciseCreateForm = ({
   inputForm,
@@ -11,7 +12,53 @@ export const RenderExerciseCreateForm = ({
   setInputForm,
   setSelected,
   selected,
+  categories,
+  ListOfFilteredAddCategories,
+  SetListOfFilteredAddCategories,
 }: any) => {
+  const [inputAddCategory, setInputAddCategory] = useState("");
+  const [isSelectAddCategoryOpen, SetIsSelectAddCategoryOpen] = useState(false);
+
+  const AddCategoriesRef = useRef<any>();
+
+  const HandleAddCategory = (category_id: string, category_name: string) => {
+    SetIsSelectAddCategoryOpen(false);
+
+    const existingCategory = ListOfFilteredAddCategories.find(
+      (element: any) => element.id === category_id
+    );
+
+    if (existingCategory) {
+      return;
+    }
+
+    SetListOfFilteredAddCategories((prevCategories: any) => [
+      ...prevCategories,
+      { id: category_id, name: category_name },
+    ]);
+  };
+  const handleRemoveItem = (e: any) => {
+    e.preventDefault();
+    const id = e.target.getAttribute("name");
+    SetListOfFilteredAddCategories(
+      ListOfFilteredAddCategories.filter((item: any) => item.id !== id)
+    );
+  };
+  useEffect(() => {
+    const checkIfClickedOutside = (e: any) => {
+      if (
+        AddCategoriesRef.current &&
+        !AddCategoriesRef.current.contains(e.target)
+      ) {
+        SetIsSelectAddCategoryOpen(false);
+      }
+    };
+    document.addEventListener("click", checkIfClickedOutside);
+    return () => {
+      document.removeEventListener("click", checkIfClickedOutside);
+    };
+    [];
+  });
   return (
     <>
       <form
@@ -72,12 +119,65 @@ export const RenderExerciseCreateForm = ({
             Description
           </label>
         </div>
-        <CategorySelector
-          setInputForm={setInputForm}
-          inputForm={inputForm}
-          selected={selected}
-          setSelected={setSelected}
-        />
+        {/* SEARCH FOR CATEGORIES */}
+        <div className="relative z-0  mt-4  mb-6 group" ref={AddCategoriesRef}>
+          <input
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
+            type="text"
+            value={inputAddCategory}
+            onChange={(e: any) => {
+              setInputAddCategory(e.target.value);
+            }}
+            name="filterCategory"
+            id="filterCategory"
+            placeholder=""
+            onClick={() => SetIsSelectAddCategoryOpen(true)}
+          />
+
+          <label
+            htmlFor="Search for categories"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-FirstColor peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Select categories
+          </label>
+          {isSelectAddCategoryOpen && (
+            <ul className="bg-white overflow-y-auto  max-h-40 border-2 mt-1  rounded-md">
+              {categories.map((category: Category) => (
+                <>
+                  {category.name
+                    .toLowerCase()
+                    .includes(inputAddCategory.toLowerCase()) && (
+                    <li
+                      className="hover:bg-FirstColor text-xs text-gray-500 hover:text-white p-1"
+                      key={category.id}
+                      onClick={() =>
+                        HandleAddCategory(category.id, category.name)
+                      }
+                    >
+                      {category.name}
+                    </li>
+                  )}
+                </>
+              ))}
+            </ul>
+          )}
+        </div>
+        {/* SEARCH FOR CATEGORIES */}
+        <div className="my-1">
+          <ul className="flex flex-wrap w-full justify-start items-center  ">
+            {ListOfFilteredAddCategories.map((category: any, index: number) => (
+              <li
+                className="h-5 flex items-center text-xs bg-FirstColor text-white px-2 py-1 rounded-lg m-1"
+                key={index}
+              >
+                <span>{category.name} </span>
+                <button name={category.id} onClick={handleRemoveItem}>
+                  &times;
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className=" flex justify-center ">
           <button
             className=" bg-FirstColor hover:bg-SecondColor my-2 mx-20 w-full md:w-96 rounded-2xl px-2 py-1 text-white"
@@ -88,84 +188,5 @@ export const RenderExerciseCreateForm = ({
         </div>
       </form>
     </>
-  );
-};
-
-export const CategorySelector = ({
-  setInputForm,
-  selected,
-  setSelected,
-}: any) => {
-  const [inputValue, setInputValue] = useState("");
-  const [open, setOpen] = useState(false);
-
-  const { categories } = useGetCategories();
-  return (
-    <div className="w-full mt-5 rounded-lg border-2 font-medium max-h-80 ">
-      <div
-        onClick={() => setOpen(!open)}
-        className={`bg-white w-full p-2 flex items-center text-black justify-between rounded ${
-          !selected && "text-gray-700"
-        }`}
-      >
-        {selected
-          ? selected?.length > 25
-            ? selected?.substring(0, 25) + "..."
-            : selected
-          : "Select category"}
-        <BiChevronDown
-          size={20}
-          className={`${
-            open
-              ? " transition-transform ease-in-out  rotate-180"
-              : " transition-transform ease-in-out  rotate-0"
-          }`}
-        />
-      </div>
-      <ul
-        className={`bg-white mt-2 overflow-y-auto ${
-          open ? "max-h-60" : "max-h-0"
-        } `}
-      >
-        <div className="flex items-center px-2 sticky top-0 bg-white">
-          <AiOutlineSearch size={18} className="text-gray-700" />
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value.toLowerCase())}
-            placeholder="Enter category name"
-            className="placeholder:text-gray-700 p-2 outline-none"
-          />
-        </div>
-        {categories?.map((category: Category) => (
-          <li
-            key={category?.id}
-            className={`p-2 text-sm hover:bg-FirstColor hover:text-white
-            ${
-              category?.name?.toLowerCase() === selected?.toLowerCase() &&
-              "bg-white text-gray-500"
-            }
-            ${
-              category?.name?.toLowerCase().startsWith(inputValue)
-                ? "block text-gray-500"
-                : "hidden"
-            }`}
-            onClick={() => {
-              if (category?.name?.toLowerCase() !== selected.toLowerCase()) {
-                setSelected(category?.name);
-                setOpen(false);
-                setInputValue("");
-                setInputForm((existingValues: any) => ({
-                  ...existingValues,
-                  category: category.id,
-                }));
-              }
-            }}
-          >
-            {category?.name}
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 };

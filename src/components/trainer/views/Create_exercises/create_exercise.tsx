@@ -21,11 +21,12 @@ export const Create_Exercise = () => {
   const [ListOfFilteredCategories, SetListOfFilteredCategories] = useState<any>(
     []
   );
+  const [ListOfFilteredAddCategories, SetListOfFilteredAddCategories] =
+    useState<any>([]);
   const [inputForm, setInputForm] = useState({
     name: "",
     video_link: "",
     description: "",
-    category: "",
   });
   const [Successmodalopen, setSucessModalOpen] = useState(false);
   const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
@@ -43,15 +44,17 @@ export const Create_Exercise = () => {
 
   const HandleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      !inputForm.name ||
-      !inputForm.video_link ||
-      !inputForm.description ||
-      !inputForm.category
-    ) {
+    if (!inputForm.name || !inputForm.video_link || !inputForm.description) {
       return;
     }
-
+    if (ListOfFilteredAddCategories.length == 0) {
+      alert("You must select at least one category");
+      return;
+    }
+    const CategoriesList = [];
+    for (let i = 0; i < ListOfFilteredAddCategories.length; i++) {
+      CategoriesList.push(ListOfFilteredAddCategories[i].id);
+    }
     try {
       const SubmitResponse = await axios.post(
         `${URLS.domain}/exercise/create_exercise`,
@@ -59,7 +62,7 @@ export const Create_Exercise = () => {
           name: inputForm.name,
           video_link: inputForm.video_link,
           description: inputForm.description,
-          categories: [inputForm.category],
+          categories: CategoriesList,
         },
         {
           headers: {
@@ -74,8 +77,8 @@ export const Create_Exercise = () => {
         name: "",
         video_link: "",
         description: "",
-        category: "",
       });
+      SetListOfFilteredAddCategories([]);
       setSelected("");
       setExercises((prevExercises) => [
         ...prevExercises,
@@ -113,6 +116,9 @@ export const Create_Exercise = () => {
             setInputForm={setInputForm}
             setSelected={setSelected}
             selected={selected}
+            categories={categories}
+            ListOfFilteredAddCategories={ListOfFilteredAddCategories}
+            SetListOfFilteredAddCategories={SetListOfFilteredAddCategories}
           />
 
           <RenderExerciseList
@@ -131,4 +137,3 @@ export const Create_Exercise = () => {
     </>
   );
 };
-

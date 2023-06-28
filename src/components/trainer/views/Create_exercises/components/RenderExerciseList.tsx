@@ -70,6 +70,7 @@ export const RenderExerciseList = ({
               Search for a exercise
             </label>
           </div>
+          {/* SEARCH FOR CATEGORIES */}
           <div
             className="relative z-0 w-1/2  mb-6 group"
             ref={SelectDisplayRef}
@@ -87,7 +88,7 @@ export const RenderExerciseList = ({
               onClick={() => SetIsSelectCategoryOpen(true)}
             />
             <label
-              htmlFor="Search for a exercise"
+              htmlFor="Search for categories"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-FirstColor peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Search for categories
@@ -114,6 +115,7 @@ export const RenderExerciseList = ({
               </ul>
             )}
           </div>
+          {/* SEARCH FOR CATEGORIES */}
         </div>
         <div className="my-1">
           <ul className="flex flex-wrap w-full justify-start items-center  ">
@@ -134,26 +136,25 @@ export const RenderExerciseList = ({
           {exercises.map((exercise: Exercise, index: number) => (
             <li key={index}>
               <div className="relative ">
-              {exercise.video_link.startsWith("https://youtu.be/") ? (
-                <img
-                  className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75"
-                  src={`https://img.youtube.com/vi/${exercise.video_link.substr(
-                    "https://youtu.be/".length
-                  )}/mqdefault.jpg`}
-                  alt={`Youtube video ${exercise.video_link.substr(
-                    "https://youtu.be/".length
-                  )}`}
-                />
-              ):(
-                <img
-                  className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75   "
-                  src={`https://img.youtube.com/vi/${
-                    exercise.video_link.split("v=")[1]
-                  }/mqdefault.jpg`}
-                  alt={`Youtube video ${exercise.video_link.split("v=")[1]}`}
-                />
-              )
-                }
+                {exercise.video_link.startsWith("https://youtu.be/") ? (
+                  <img
+                    className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75"
+                    src={`https://img.youtube.com/vi/${exercise.video_link.substr(
+                      "https://youtu.be/".length
+                    )}/mqdefault.jpg`}
+                    alt={`Youtube video ${exercise.video_link.substr(
+                      "https://youtu.be/".length
+                    )}`}
+                  />
+                ) : (
+                  <img
+                    className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75   "
+                    src={`https://img.youtube.com/vi/${
+                      exercise.video_link.split("v=")[1]
+                    }/mqdefault.jpg`}
+                    alt={`Youtube video ${exercise.video_link.split("v=")[1]}`}
+                  />
+                )}
                 <div className="absolute  left-2  bottom-7 flex items-center justify-center">
                   <h2 className="text-white text-base font-bold">
                     {exercise.name}
