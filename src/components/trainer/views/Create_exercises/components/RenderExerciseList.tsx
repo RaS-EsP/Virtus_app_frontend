@@ -14,6 +14,7 @@ export const RenderExerciseList = ({
   ListOfFilteredCategories: [string];
   SetListOfFilteredCategories: any;
 }) => {
+  const [inputExercise, setinputExercise] = useState("");
   const SelectDisplayRef = useRef<any>();
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [inputCategory, setInputCategory] = useState("");
@@ -27,12 +28,18 @@ export const RenderExerciseList = ({
       ...prevCategories,
       category,
     ]);
+    filterExercises(inputExercise);
   };
   const handleRemoveItem = (e: any) => {
     const name = e.target.getAttribute("name");
     SetListOfFilteredCategories(
       ListOfFilteredCategories.filter((item) => item !== name)
     );
+    filterExercises(inputExercise);
+  };
+  const HandleOnChange = (e: any) => {
+    setinputExercise(e.target.value);
+    filterExercises(inputExercise);
   };
   useEffect(() => {
     const checkIfClickedOutside = (e: any) => {
@@ -58,7 +65,7 @@ export const RenderExerciseList = ({
             <input
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
               type="text"
-              onChange={(e) => filterExercises(e.target.value)}
+              onChange={HandleOnChange}
               name="filter"
               id="filter"
               placeholder=""
