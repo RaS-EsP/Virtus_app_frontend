@@ -14,6 +14,8 @@ import { Transition } from "@headlessui/react";
 import { transitionClases } from "../../../../transitions/transitions";
 
 export const Create_Exercise = () => {
+  const [inputExercise, setinputExercise] = useState("");
+
   const { categories, IsCategoriesLoaded } = useGetCategories();
   const { exercises, AreExercisesLoaded, setExercises } =
     useGetExercisesByTrainer();
@@ -89,17 +91,26 @@ export const Create_Exercise = () => {
       console.log(err?.response?.data);
     }
   };
-  const filterExercises = useCallback(
-    (searchValue: string) => {
-      const filtered = exercises.filter((exercise: Exercise) => {
-        const name = exercise.name.toLowerCase();
-        const search = searchValue.toLowerCase();
-        return name.includes(search);
-      });
-      setFilteredExercises(filtered);
-    },
-    [exercises]
-  );
+  const filterExercises = (searchValue: string) => {
+    let result;
+    if (ListOfFilteredCategories.length > 0) {
+      result = exercises.filter(
+        (ex) =>
+          ex.categories.some((cat) =>
+            ListOfFilteredCategories.includes(cat.name)
+          ) && ex.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    } else {
+      result = exercises.filter((ex) =>
+        ex.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+    setFilteredExercises(result);
+  };
+
+  useEffect(() => {
+    filterExercises(inputExercise);
+  }, [filterExercises, ListOfFilteredCategories]);
 
   return (
     <>
@@ -122,6 +133,8 @@ export const Create_Exercise = () => {
           />
 
           <RenderExerciseList
+            inputExercise={inputExercise}
+            setinputExercise={setinputExercise}
             exercises={
               filteredExercises.length > 0 ? filteredExercises : exercises
             }

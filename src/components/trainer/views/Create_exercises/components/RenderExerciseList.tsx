@@ -7,14 +7,17 @@ export const RenderExerciseList = ({
   categories,
   ListOfFilteredCategories,
   SetListOfFilteredCategories,
+  inputExercise,
+  setinputExercise,
 }: {
   exercises: Exercise[];
   filterExercises: any;
   categories: Category[];
   ListOfFilteredCategories: [string];
   SetListOfFilteredCategories: any;
+  inputExercise: any;
+  setinputExercise: any;
 }) => {
-  const [inputExercise, setinputExercise] = useState("");
   const SelectDisplayRef = useRef<any>();
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [inputCategory, setInputCategory] = useState("");
