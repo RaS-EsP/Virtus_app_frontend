@@ -165,8 +165,8 @@ export const RenderExerciseList = ({
                     alt={`Youtube video ${exercise.video_link.split("v=")[1]}`}
                   />
                 )}
-                <div className="absolute  left-2  top-1 flex items-center justify-center">
-                  <h2 className="text-white text-base font-bold">
+                <div className="absolute bg-FirstColor bg-opacity-50 rounded-lg px-1 left-2  top-1 flex items-center justify-center">
+                  <h2 className="text-white  text-sm font-bold">
                     {exercise.name}
                   </h2>
                 </div>
