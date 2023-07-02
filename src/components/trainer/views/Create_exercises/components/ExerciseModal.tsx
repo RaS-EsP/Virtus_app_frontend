@@ -9,7 +9,10 @@ import { getAuthToken } from "../../../hooks/useIsAuthJwt";
 import { Successmodal } from "./SucessModal";
 import { SuccessDeletemodal } from "./SucessDeleteModal";
 import { transitionClases } from "../../../../../transitions/transitions";
-
+import { useDeleteExercise } from "../hooks/useDeleteExercise";
+import { DeleteConfirmationmodal } from "./DeleteConfirmationmodalopen";
+import { SuccessUpdatemodal } from "./SucessUpdateModal";
+import { useUpdateExercise } from "../hooks/useUpdateExercise";
 export const ExerciseModal = ({
   closeModal,
   ExerciseModalInfo,
@@ -23,10 +26,15 @@ export const ExerciseModal = ({
     video_link: ExerciseModalInfo.video_link,
     categories: ExerciseModalInfo.categories,
   });
+  const [SuccessUpdateExercisemodalopen, setSuccessUpdateExercisemodalopen] =
+    useState(false);
   const [inputCategoryModal, setInputCategoryModal] = useState("");
   const SelectDisplayModalRef = useRef<any>();
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [SuccessDeletemodalopen, setSuccessDeletemodalopen] = useState(false);
+  const [DeleteConfirmationmodalopen, setDeleteConfirmationmodalopen] =
+    useState(false);
+
   const handleChangeExerciseValues = (e: any) => {
     setExerciseValues({
       ...ExerciseValues,
@@ -55,39 +63,24 @@ export const ExerciseModal = ({
   };
   useCloseSelect(SelectDisplayModalRef, SetIsSelectCategoryOpen);
   const handleDeleteExercise = () => {
-    async function deleteExercise(exerciseId: string) {
-      try {
-        const response = await axios.delete(
-          `${URLS.domain}/exercise/delete/${exerciseId}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `bearer ${getAuthToken()}`,
-            },
-          }
-        );
-        setExercises((prevExercises: Exercise[]) =>
-          prevExercises.filter((exercise) => exercise.id !== ExerciseValues.id)
-        );
-        setSuccessDeletemodalopen(true);
-
-        setTimeout(() => {
-          setSuccessDeletemodalopen(false);
-          closeModal((prevState: any) => !prevState);
-        }, 2000);
-        // Hacer algo con la respuesta exitosa
-      } catch (error) {
-        console.error(error);
-        // Hacer algo con el error
-      }
-    }
-    deleteExercise(ExerciseValues.id);
+    useDeleteExercise({
+      ExerciseValues,
+      closeModal,
+      setSuccessDeletemodalopen,
+      setExercises,
+    });
   };
   const handleSubmitExercise = () => {
     if (ExerciseValues.categories.length == 0) {
       alert("You must add at least one category");
       return;
     }
+    useUpdateExercise({
+      setExercises,
+      setSuccessUpdateExercisemodalopen,
+      closeModal,
+      ExerciseValues,
+    });
   };
   return (
     <>
@@ -238,7 +231,7 @@ export const ExerciseModal = ({
           </div>
           <div className="flex justify-end gap-2">
             <button
-              onClick={handleDeleteExercise}
+              onClick={() => setDeleteConfirmationmodalopen(true)}
               className="bg-red-400 text-white rounded-2xl px-2 py-1 hover:bg-red-500"
             >
               Delete
@@ -254,6 +247,21 @@ export const ExerciseModal = ({
       </div>{" "}
       <Transition show={SuccessDeletemodalopen} {...transitionClases.opacity2}>
         <SuccessDeletemodal />
+      </Transition>
+      <Transition
+        show={SuccessUpdateExercisemodalopen}
+        {...transitionClases.opacity2}
+      >
+        <SuccessUpdatemodal />
+      </Transition>
+      <Transition
+        show={DeleteConfirmationmodalopen}
+        {...transitionClases.opacity2}
+      >
+        <DeleteConfirmationmodal
+          OpenDeleteModal={handleDeleteExercise}
+          closeModal={setDeleteConfirmationmodalopen}
+        />
       </Transition>
     </>
   );
