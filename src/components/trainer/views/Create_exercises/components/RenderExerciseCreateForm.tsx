@@ -4,6 +4,7 @@ import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useGetCategories } from "../../../hooks/useGetCategories";
 import { forEachChild } from "typescript";
+import { useCloseSelect } from "../hooks/useCloseSelect";
 
 export const RenderExerciseCreateForm = ({
   inputForm,
@@ -44,21 +45,8 @@ export const RenderExerciseCreateForm = ({
       ListOfFilteredAddCategories.filter((item: any) => item.id !== id)
     );
   };
-  useEffect(() => {
-    const checkIfClickedOutside = (e: any) => {
-      if (
-        AddCategoriesRef.current &&
-        !AddCategoriesRef.current.contains(e.target)
-      ) {
-        SetIsSelectAddCategoryOpen(false);
-      }
-    };
-    document.addEventListener("click", checkIfClickedOutside);
-    return () => {
-      document.removeEventListener("click", checkIfClickedOutside);
-    };
-    [];
-  });
+
+  useCloseSelect(AddCategoriesRef, SetIsSelectAddCategoryOpen);
   return (
     <>
       <form
@@ -172,7 +160,7 @@ export const RenderExerciseCreateForm = ({
               >
                 <span>{category.name} </span>
                 <button name={category.id} onClick={handleRemoveItem}>
-                  &times;
+                  &nbsp;&times;
                 </button>
               </li>
             ))}

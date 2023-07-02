@@ -17,6 +17,7 @@ export const Create_Exercise = () => {
   const [inputExercise, setinputExercise] = useState("");
 
   const { categories, IsCategoriesLoaded } = useGetCategories();
+
   const { exercises, AreExercisesLoaded, setExercises } =
     useGetExercisesByTrainer();
   const [selected, setSelected] = useState("");
@@ -91,26 +92,29 @@ export const Create_Exercise = () => {
       console.log(err?.response?.data);
     }
   };
-  const filterExercises = (searchValue: string) => {
-    let result;
-    if (ListOfFilteredCategories.length > 0) {
-      result = exercises.filter(
-        (ex) =>
-          ex.categories.some((cat) =>
-            ListOfFilteredCategories.includes(cat.name)
-          ) && ex.name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    } else {
-      result = exercises.filter((ex) =>
-        ex.name.toLowerCase().includes(searchValue.toLowerCase())
-      );
-    }
-    setFilteredExercises(result);
-  };
+  const filterExercises = useCallback(
+    (searchValue: string) => {
+      let result;
+      if (ListOfFilteredCategories.length > 0) {
+        result = exercises.filter(
+          (ex) =>
+            ex.categories.some((cat) =>
+              ListOfFilteredCategories.includes(cat.name)
+            ) && ex.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+      } else {
+        result = exercises.filter((ex) =>
+          ex.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+      }
+      setFilteredExercises(result);
+    },
+    [exercises, ListOfFilteredCategories]
+  );
 
   useEffect(() => {
     filterExercises(inputExercise);
-  }, [filterExercises, ListOfFilteredCategories]);
+  }, [filterExercises, inputExercise]);
 
   return (
     <>
@@ -142,6 +146,7 @@ export const Create_Exercise = () => {
             categories={categories}
             SetListOfFilteredCategories={SetListOfFilteredCategories}
             ListOfFilteredCategories={ListOfFilteredCategories}
+            setExercises={setExercises}
           />
         </div>
       ) : (

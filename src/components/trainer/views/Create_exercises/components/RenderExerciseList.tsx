@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Category, Exercise } from "../../../../../Interfaces";
 import { json } from "stream/consumers";
+import { CloseNavButton } from "../../../../header/NavButtons";
+import { ExerciseModal } from "./ExerciseModal";
+import { Transition } from "@headlessui/react";
+import { transitionClases } from "../../../../../transitions/transitions";
 export const RenderExerciseList = ({
   exercises,
   filterExercises,
@@ -9,6 +13,7 @@ export const RenderExerciseList = ({
   SetListOfFilteredCategories,
   inputExercise,
   setinputExercise,
+  setExercises,
 }: {
   exercises: Exercise[];
   filterExercises: any;
@@ -17,10 +22,13 @@ export const RenderExerciseList = ({
   SetListOfFilteredCategories: any;
   inputExercise: any;
   setinputExercise: any;
+  setExercises: any;
 }) => {
   const SelectDisplayRef = useRef<any>();
+  const [ExerciseModalInfo, setExerciseModalInfo] = useState<any>();
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [inputCategory, setInputCategory] = useState("");
+  const [isOpenExerciseModal, setisOpenExerciseModal] = useState(false);
   useState([ListOfFilteredCategories]);
   const HandleSelectFilteredCategory = (category: string) => {
     SetIsSelectCategoryOpen(false);
@@ -33,10 +41,9 @@ export const RenderExerciseList = ({
     ]);
     filterExercises(inputExercise);
   };
-  const handleRemoveItem = (e: any) => {
-    const name = e.target.getAttribute("name");
+  const handleRemoveItem = (value: string) => {
     SetListOfFilteredCategories(
-      ListOfFilteredCategories.filter((item) => item !== name)
+      ListOfFilteredCategories.filter((item) => item !== value)
     );
     filterExercises(inputExercise);
   };
@@ -134,17 +141,29 @@ export const RenderExerciseList = ({
                 className="h-5 flex items-center text-xs bg-FirstColor text-white px-2 py-1 rounded-lg m-1"
                 key={index}
               >
-                <span>{category} </span>
-                <button name={category} onClick={handleRemoveItem}>
-                  &times;
-                </button>
+                <div>
+                  {category}
+                  <span
+                    onClick={() => handleRemoveItem(category)}
+                    className="cursor-pointer"
+                  >
+                    {" "}
+                    &times;
+                  </span>
+                </div>
               </li>
             ))}
           </ul>
         </div>
         <ul className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 justify-items-center  ">
           {exercises.map((exercise: Exercise, index: number) => (
-            <li key={index}>
+            <li
+              onClick={() => {
+                setisOpenExerciseModal(true);
+                setExerciseModalInfo(exercise);
+              }}
+              key={index}
+            >
               <div className="relative ">
                 {exercise.video_link.startsWith("https://youtu.be/") ? (
                   <img
@@ -187,6 +206,15 @@ export const RenderExerciseList = ({
           ))}
         </ul>
       </div>
+
+      <Transition show={isOpenExerciseModal} {...transitionClases.opacity}>
+        <ExerciseModal
+          ExerciseModalInfo={ExerciseModalInfo}
+          closeModal={setisOpenExerciseModal}
+          categories={categories}
+          setExercises={setExercises}
+        />
+      </Transition>
     </>
   );
 };
