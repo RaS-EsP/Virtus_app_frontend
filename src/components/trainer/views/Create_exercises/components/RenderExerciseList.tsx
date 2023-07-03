@@ -193,7 +193,7 @@ export const RenderExerciseList = ({
                   {exercise.categories.map((cat: any, index: number) => (
                     <div
                       key={index}
-                      className="inline-block mx-[2px]  bg-FirstColor rounded-xl px-2 py-1"
+                      className="inline-block mx-[2px] opacity-80  bg-FirstColor rounded-xl px-2 py-1"
                     >
                       <h2 className="text-white text-xs font-bold">
                         {cat.name}
