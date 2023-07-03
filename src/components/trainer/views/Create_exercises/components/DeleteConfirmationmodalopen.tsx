@@ -16,13 +16,13 @@ export const DeleteConfirmationmodal = ({
               closeModal(false);
               OpenDeleteModal();
             }}
-            className="rounded-xl bg-green-300  py-1 mb-2 cursor-pointer hover:bg-green-400 font-bold w-full  mx-5"
+            className="rounded-xl bg-FirstColor text-white py-1 mb-2 cursor-pointer hover:bg-SecondColor font-bold w-full  mx-5"
           >
             YES
           </button>
           <button
             onClick={() => closeModal(false)}
-            className="rounded-xl bg-red-300  py-1 mb-2 cursor-pointer hover:bg-red-400 font-bold w-full mx-5"
+            className="rounded-xl bg-white border-FirstColor hover:text-white hover:border-ThirdColor border-2 hover:bg-ThirdColor text-FirstColor py-1 mb-2 cursor-pointer  font-bold w-full mx-5"
           >
             NO
           </button>

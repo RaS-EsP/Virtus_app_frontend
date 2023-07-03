@@ -5,6 +5,10 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useGetCategories } from "../../../hooks/useGetCategories";
 import { forEachChild } from "typescript";
 import { useCloseSelect } from "../hooks/useCloseSelect";
+import { CategoryModal } from "./categorieModal";
+import { Transition } from "@headlessui/react";
+import { transitionClases } from "../../../../../transitions/transitions";
+import Tooltip from "@mui/material/Tooltip";
 
 export const RenderExerciseCreateForm = ({
   inputForm,
@@ -19,7 +23,7 @@ export const RenderExerciseCreateForm = ({
 }: any) => {
   const [inputAddCategory, setInputAddCategory] = useState("");
   const [isSelectAddCategoryOpen, SetIsSelectAddCategoryOpen] = useState(false);
-
+  const [CategoryModalopen, setCategoryModalopen] = useState(false);
   const AddCategoriesRef = useRef<any>();
 
   const HandleAddCategory = (category_id: string, category_name: string) => {
@@ -107,8 +111,19 @@ export const RenderExerciseCreateForm = ({
             Description
           </label>
         </div>
+
         {/* SEARCH FOR CATEGORIES */}
         <div className="relative z-0  mt-4  mb-6 group" ref={AddCategoriesRef}>
+          <Tooltip open={true} title="Add" placement="top-start">
+            <button
+              onClick={() => setCategoryModalopen(!CategoryModalopen)}
+              type="button"
+              className="fixed right-3 text-FirstColor hover:text-SecondColor translate-y-3 scale-150  "
+            >
+              +
+            </button>
+          </Tooltip>
+
           <input
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
             type="text"
@@ -128,6 +143,7 @@ export const RenderExerciseCreateForm = ({
           >
             Select categories
           </label>
+
           {isSelectAddCategoryOpen && (
             <ul className="bg-white overflow-y-auto  max-h-40 border-2 mt-1  rounded-md">
               {categories.map((category: Category) => (
@@ -166,6 +182,7 @@ export const RenderExerciseCreateForm = ({
             ))}
           </ul>
         </div>
+
         <div className=" flex justify-center ">
           <button
             className=" bg-FirstColor hover:bg-SecondColor my-2 mx-20 w-full md:w-96 rounded-2xl px-2 py-1 text-white"
@@ -175,6 +192,12 @@ export const RenderExerciseCreateForm = ({
           </button>
         </div>
       </form>
+      {CategoryModalopen && (
+        <CategoryModal
+          categories={categories}
+          setCategoryModalopen={setCategoryModalopen}
+        />
+      )}
     </>
   );
 };
