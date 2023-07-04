@@ -1,12 +1,47 @@
 import React, { useState } from "react";
 import { CloseNavButton } from "../../../../header/NavButtons";
-import { Category } from "../../../../../Interfaces";
+import { Category, Exercise } from "../../../../../Interfaces";
 import { DeleteConfirmationmodal } from "./DeleteConfirmationmodalopen";
+import axios from "axios";
+import { URLS } from "../../../../../urls";
+import { getAuthToken } from "../../../hooks/useIsAuthJwt";
+import { useHandleRemoveCategory } from "../hooks/useDeleteCategory";
+import { useGetExercisesByTrainer } from "../../../hooks/useGetExercises";
 
-export const CategoryModal = ({ setCategoryModalopen, categories }: any) => {
+export const CategoryModal = ({
+  setCategoryModalopen,
+  categories,
+  setCategories,
+  setExercises,
+}: any) => {
   const [NewCategoryInput, setNewCategoryInput] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [DeleteConfirmation, setDeleteConfirmation] = useState<boolean>(false);
+
+  const CreateCategory = async () => {
+    try {
+      const response = await axios.post(
+        `${URLS.domain}/category/create`,
+        {
+          name: NewCategoryInput,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${getAuthToken()}`,
+          },
+        }
+      );
+      setCategories((prevcat: Category[]) => [
+        ...prevcat,
+        response.data.data.Category,
+      ]);
+      const { exercises } = useGetExercisesByTrainer();
+      setExercises(exercises);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <>
@@ -20,7 +55,7 @@ export const CategoryModal = ({ setCategoryModalopen, categories }: any) => {
           </div>
           <div className="w-full text-left ml-10 mt-2 font-bold">
             CATEGORIES
-          </div>
+          </div>{" "}
           <div className="font-semibold  border-t-2 w-full text-center mt-2">
             <span className="w-full flex justify-center">
               Create Category &nbsp;
@@ -37,7 +72,10 @@ export const CategoryModal = ({ setCategoryModalopen, categories }: any) => {
                   placeholder="New category"
                   onChange={(e) => setNewCategoryInput(e.target.value)}
                 ></input>
-                <button className="bg-FirstColor hover:bg-SecondColor rounded-2xl mx-2 px-5 text-white h-fit py-1  w-20">
+                <button
+                  onClick={() => CreateCategory()}
+                  className="bg-FirstColor hover:bg-SecondColor rounded-2xl mx-2 px-5 text-white h-fit py-1  w-20"
+                >
                   Create
                 </button>
               </span>
@@ -72,24 +110,45 @@ export const CategoryModal = ({ setCategoryModalopen, categories }: any) => {
           </div>
         </div>
         {DeleteConfirmation && (
-          <DeleteCatModal setDeleteConfirmation={setDeleteConfirmation} />
+          <DeleteCatModal
+            setDeleteConfirmation={setDeleteConfirmation}
+            selectedCategory={selectedCategory}
+            setCategories={setCategories}
+            setCategoryModalopen={setCategoryModalopen}
+            setSelectedCategory={setSelectedCategory}
+            categories={categories}
+          />
         )}
       </div>
     </>
   );
 };
 
-export const DeleteCatModal = ({ setDeleteConfirmation }: any) => {
+export const DeleteCatModal = ({
+  setDeleteConfirmation,
+  selectedCategory,
+  setCategories,
+  setCategoryModalopen,
+  setSelectedCategory,
+  categories,
+}: any) => {
   return (
     <div className="fixed inset-0 z-20 bg-gray-950 bg-opacity-50 backdrop-blur-sm flex items-center justify-center ">
       <div className="m-5 py-5 h-auto flex flex-col items-center justify-center bg-white drop-shadow-lg max-w-lg max-h-96 rounded-3xl  overflow-hidden">
         <h2 className="mt-2  text-center px-10 mb-4 text-2xl font-bold  text-gray-900  dark:text-white ">
-          Are you sure that you want to delete this exercise?{" "}
+          Are you sure that you want to delete this category?{" "}
         </h2>
         <div className="flex gap-2 w-full">
           <button
             onClick={() => {
-              setDeleteConfirmation(false);
+              useHandleRemoveCategory({
+                setCategoryModalopen,
+                selectedCategory,
+                setCategories,
+                setSelectedCategory,
+                setDeleteConfirmation,
+                categories,
+              });
             }}
             className="rounded-xl bg-FirstColor text-white py-1 mb-2 cursor-pointer hover:bg-SecondColor font-bold w-full  mx-5"
           >

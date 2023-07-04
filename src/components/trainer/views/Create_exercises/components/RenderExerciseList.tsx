@@ -29,7 +29,7 @@ export const RenderExerciseList = ({
   const [isSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [inputCategory, setInputCategory] = useState("");
   const [isOpenExerciseModal, setisOpenExerciseModal] = useState(false);
-  useState([ListOfFilteredCategories]);
+
   const HandleSelectFilteredCategory = (category: string) => {
     SetIsSelectCategoryOpen(false);
     if (ListOfFilteredCategories.includes(category)) {

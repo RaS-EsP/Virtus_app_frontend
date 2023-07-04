@@ -17,13 +17,17 @@ export const RenderExerciseCreateForm = ({
   setInputForm,
   setSelected,
   selected,
+  setExercises,
   categories,
   ListOfFilteredAddCategories,
   SetListOfFilteredAddCategories,
+  setCategories,
+  CategoryModalopen,
+  setCategoryModalopen,
 }: any) => {
+  const [tooltipState, setTooTipState] = useState<boolean>(false);
   const [inputAddCategory, setInputAddCategory] = useState("");
   const [isSelectAddCategoryOpen, SetIsSelectAddCategoryOpen] = useState(false);
-  const [CategoryModalopen, setCategoryModalopen] = useState(false);
   const AddCategoriesRef = useRef<any>();
 
   const HandleAddCategory = (category_id: string, category_name: string) => {
@@ -114,9 +118,11 @@ export const RenderExerciseCreateForm = ({
 
         {/* SEARCH FOR CATEGORIES */}
         <div className="relative z-0  mt-4  mb-6 group" ref={AddCategoriesRef}>
-          <Tooltip open={true} title="Add" placement="top-start">
+          <Tooltip open={tooltipState} title="Edit" placement="left">
             <button
               onClick={() => setCategoryModalopen(!CategoryModalopen)}
+              onMouseEnter={() => setTooTipState(true)}
+              onMouseLeave={() => setTooTipState(false)}
               type="button"
               className="fixed right-3 text-FirstColor hover:text-SecondColor translate-y-3 scale-150  "
             >
@@ -196,6 +202,8 @@ export const RenderExerciseCreateForm = ({
         <CategoryModal
           categories={categories}
           setCategoryModalopen={setCategoryModalopen}
+          setCategories={setCategories}
+          setExercises={setExercises}
         />
       )}
     </>

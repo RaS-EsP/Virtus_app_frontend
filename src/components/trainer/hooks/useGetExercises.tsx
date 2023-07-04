@@ -7,6 +7,7 @@ export const useGetExercisesByTrainer = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [AreExercisesLoaded, setAreExercisesLoaded] = useState(false);
   useEffect(() => {
+    console.log("render");
     const GetExercises = async () => {
       try {
         const exercisesFetch = await axios.get(

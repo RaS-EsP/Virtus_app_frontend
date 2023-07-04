@@ -27,5 +27,5 @@ export const useGetCategories = () => {
     GetCategories();
   }, []);
 
-  return { categories, IsCategoriesLoaded };
+  return { categories, IsCategoriesLoaded, setCategories };
 };

@@ -8,15 +8,15 @@ import { Exercise } from "../../../../Interfaces";
 import { getAuthToken } from "../../hooks/useIsAuthJwt";
 import { useGetCategories } from "../../hooks/useGetCategories";
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
-
 import { Successmodal } from "./components/SucessModal";
 import { Transition } from "@headlessui/react";
 import { transitionClases } from "../../../../transitions/transitions";
 
 export const Create_Exercise = () => {
   const [inputExercise, setinputExercise] = useState("");
+  const [CategoryModalopen, setCategoryModalopen] = useState(false);
 
-  const { categories, IsCategoriesLoaded } = useGetCategories();
+  const { categories, IsCategoriesLoaded, setCategories } = useGetCategories();
 
   const { exercises, AreExercisesLoaded, setExercises } =
     useGetExercisesByTrainer();
@@ -125,6 +125,7 @@ export const Create_Exercise = () => {
           </Transition>
 
           <RenderExerciseCreateForm
+            setExercises={setExercises}
             inputForm={inputForm}
             handleChangeForm={handleChangeForm}
             HandleSubmitForm={HandleSubmitForm}
@@ -134,6 +135,9 @@ export const Create_Exercise = () => {
             categories={categories}
             ListOfFilteredAddCategories={ListOfFilteredAddCategories}
             SetListOfFilteredAddCategories={SetListOfFilteredAddCategories}
+            setCategories={setCategories}
+            setCategoryModalopen={setCategoryModalopen}
+            CategoryModalopen={CategoryModalopen}
           />
 
           <RenderExerciseList
