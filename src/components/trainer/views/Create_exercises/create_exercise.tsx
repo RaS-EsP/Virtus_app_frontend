@@ -7,7 +7,10 @@ import { URLS } from "../../../../urls";
 import { Exercise } from "../../../../Interfaces";
 import { getAuthToken } from "../../hooks/useIsAuthJwt";
 import { useGetCategories } from "../../hooks/useGetCategories";
-import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
+import {
+  GetExercisesByTrainer,
+  useGetExercisesByTrainer,
+} from "../../hooks/useGetExercises";
 import { Successmodal } from "./components/SucessModal";
 import { Transition } from "@headlessui/react";
 import { transitionClases } from "../../../../transitions/transitions";
@@ -18,8 +21,13 @@ export const Create_Exercise = () => {
 
   const { categories, IsCategoriesLoaded, setCategories } = useGetCategories();
 
-  const { exercises, AreExercisesLoaded, setExercises } =
-    useGetExercisesByTrainer();
+  const { exercises, AreExercisesLoaded, setExercises } = GetExercisesByTrainer(
+    {
+      categories,
+      CategoryModalopen,
+      setCategoryModalopen,
+    }
+  );
   const [selected, setSelected] = useState("");
   const [ListOfFilteredCategories, SetListOfFilteredCategories] = useState<any>(
     []

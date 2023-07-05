@@ -7,7 +7,6 @@ export const useGetExercisesByTrainer = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [AreExercisesLoaded, setAreExercisesLoaded] = useState(false);
   useEffect(() => {
-    console.log("render");
     const GetExercises = async () => {
       try {
         const exercisesFetch = await axios.get(
@@ -28,6 +27,34 @@ export const useGetExercisesByTrainer = () => {
     };
     GetExercises();
   }, []);
+
+  return { exercises, AreExercisesLoaded, setExercises };
+};
+
+export const GetExercisesByTrainer = ({ CategoryModalopen }: any) => {
+  const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [AreExercisesLoaded, setAreExercisesLoaded] = useState(false);
+  useEffect(() => {
+    const GetExercises = async () => {
+      try {
+        const exercisesFetch = await axios.get(
+          `${URLS.domain}/exercise/getmany`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `bearer ${getAuthToken()}`,
+            },
+          }
+        );
+        setExercises(exercisesFetch.data.data.exercises);
+        setAreExercisesLoaded(true);
+      } catch (error) {
+        const err = error as AxiosError;
+        console.log(err.response?.data);
+      }
+    };
+    GetExercises();
+  }, [CategoryModalopen]);
 
   return { exercises, AreExercisesLoaded, setExercises };
 };

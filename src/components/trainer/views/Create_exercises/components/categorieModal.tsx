@@ -36,8 +36,7 @@ export const CategoryModal = ({
         ...prevcat,
         response.data.data.Category,
       ]);
-      const { exercises } = useGetExercisesByTrainer();
-      setExercises(exercises);
+      setNewCategoryInput("");
     } catch (e) {
       console.error(e);
     }
@@ -72,12 +71,18 @@ export const CategoryModal = ({
                   placeholder="New category"
                   onChange={(e) => setNewCategoryInput(e.target.value)}
                 ></input>
-                <button
-                  onClick={() => CreateCategory()}
-                  className="bg-FirstColor hover:bg-SecondColor rounded-2xl mx-2 px-5 text-white h-fit py-1  w-20"
-                >
-                  Create
-                </button>
+                {NewCategoryInput == "" ? (
+                  <button className="flex items-center  bg-SecondColor text-white cursor-not-allowed rounded-xl py-1 px-2 mx-2 ">
+                    Create
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => CreateCategory()}
+                    className="flex items-center  bg-FirstColor hover:bg-SecondColor hover:text-white text-white rounded-xl py-1 px-2 mx-2 "
+                  >
+                    Create
+                  </button>
+                )}
               </span>
             </div>
           </div>
