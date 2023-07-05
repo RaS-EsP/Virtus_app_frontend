@@ -3,7 +3,7 @@ import { URLS } from "../../../urls";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getAuthToken } from "./useIsAuthJwt";
 import { Exercise } from "../../../Interfaces";
-export const useGetExercisesByTrainer = () => {
+export const useGetExercisesByTrainer = ({ Dependencies }: any) => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [AreExercisesLoaded, setAreExercisesLoaded] = useState(false);
   useEffect(() => {
@@ -26,7 +26,7 @@ export const useGetExercisesByTrainer = () => {
       }
     };
     GetExercises();
-  }, []);
+  }, [Dependencies]);
 
   return { exercises, AreExercisesLoaded, setExercises };
 };

@@ -7,10 +7,7 @@ import { URLS } from "../../../../urls";
 import { Exercise } from "../../../../Interfaces";
 import { getAuthToken } from "../../hooks/useIsAuthJwt";
 import { useGetCategories } from "../../hooks/useGetCategories";
-import {
-  GetExercisesByTrainer,
-  useGetExercisesByTrainer,
-} from "../../hooks/useGetExercises";
+import { GetExercisesByTrainer } from "../../hooks/useGetExercises";
 import { Successmodal } from "./components/SucessModal";
 import { Transition } from "@headlessui/react";
 import { transitionClases } from "../../../../transitions/transitions";
