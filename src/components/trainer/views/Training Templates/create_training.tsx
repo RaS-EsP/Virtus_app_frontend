@@ -1,20 +1,54 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useGetExercisesByTrainer } from "../../hooks/useGetExercises";
 import { Category, Exercise } from "../../../../Interfaces";
 import { useGetCategories } from "../../hooks/useGetCategories";
+import { json } from "stream/consumers";
+import { useFilterExercises } from "./hooks/filterExercises";
+import { ExerciseList } from "./components/ExerciseList";
+import { click } from "@testing-library/user-event/dist/click";
+import { RenderTrainingTemplate } from "./components/RenderTrainingTemplate";
+
+export interface TrainingDetailsInTemplate {
+  exercise_id: string;
+  exercise_name: string;
+  sets: number;
+  repetitions: number;
+  rir: number;
+  weight: number;
+  rest: number;
+  video_link: string;
+}
 
 export const Create_training = () => {
   const { exercises, AreExercisesLoaded, setExercises } =
     useGetExercisesByTrainer([]);
   const { categories } = useGetCategories();
-  const HandleExerciseSearch = () => {
-    console.log("hola");
-  };
   const [inputCategory, setInputCategory] = useState("");
+  const [inputExercise, setInputExercise] = useState("");
   const [IsSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [ListOfCategoriesToFilter, setListOfCategoriesToFilter] = useState<
     string[]
   >([]);
+  const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
+  const [TrainingDetails, setTrainingDetails] = useState<any[]>([]);
+  const AddTrainingDetails = (exercise: Exercise, index: number) => {
+    const newExercise = {
+      exercise_id: exercise.id,
+      exercise_name: exercise.name,
+      sets: 4,
+      repetitions: 12,
+      rir: 0,
+      weight: 0,
+      rest: 60,
+      video_link: exercise.video_link,
+    };
+    setTrainingDetails((prevExercises) => [...prevExercises, newExercise]);
+  };
+  const RemoveFromTrainingDetails = (exercise_id: string) => {
+    setTrainingDetails((prevState) => [
+      ...prevState.filter((ex) => ex.exercise_id != exercise_id),
+    ]);
+  };
   const HandleSelectFilteredCategory = (category: string) => {
     SetIsSelectCategoryOpen(false);
     if (ListOfCategoriesToFilter.includes(category)) {
@@ -24,20 +58,50 @@ export const Create_training = () => {
     setListOfCategoriesToFilter([...ListOfCategoriesToFilter, category]);
   };
   const handleRemoveCat = (category: string) => {
-    console.log(category);
+    setListOfCategoriesToFilter(
+      ListOfCategoriesToFilter.filter((cat) => cat != category)
+    );
   };
+
+  useFilterExercises({
+    ListOfCategoriesToFilter,
+    exercises,
+    inputExercise,
+    setFilteredExercises,
+  });
+
   return (
     <div className="flex flex-col md:flex-row m-5 py-5 drop-shadow-xl rounded-xl bg-white ">
-      <div className="w-full flex justify-center items-center  md:w-1/2 border-r-2 px-5  "></div>
-      <div className="w-full md:w-1/2 flex justify-center items-center  px-5">
+      <div className="w-full flex justify-center mb-5   md:w-1/2 md:border-r-2 px-5  ">
+        <div className="w-full">
+          <h2 className="font-bold    ">TRAINING TEMPLATE</h2>
+          <RenderTrainingTemplate
+            TrainingDetails={TrainingDetails}
+            RemoveFromTrainingDetails={RemoveFromTrainingDetails}
+          />
+        </div>
+      </div>
+      <div className="w-full md:w-1/2 flex justify-center   px-5">
         <div>
-          <h2 className="font-bold mb-4">EXERCISES</h2>
+          <h2 className="font-bold ">EXERCISES</h2>
+          <div className="relative ">
+            <h3
+              className="font-semibold mt-1 mb-2
+            "
+            >
+              Select your exercises
+            </h3>
+            <button className="absolute px-2 right-2 top-0 rounded-2xl bg-ThirdColor text-white hover:text-SecondColor hover:bg-FourthColor">
+              Create exercise
+            </button>
+          </div>
           <div className="flex flex-row gap-5 justify-between">
             <div className="relative z-0 w-1/2 mb-6 group">
               <input
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
                 type="text"
-                onChange={HandleExerciseSearch}
+                value={inputExercise}
+                onChange={(e) => setInputExercise(e.target.value)}
                 name="filter"
                 id="filter"
                 placeholder=""
@@ -70,15 +134,15 @@ export const Create_training = () => {
                 Search for categories
               </label>
               {IsSelectCategoryOpen && (
-                <ul className="bg-white overflow-y-auto  max-h-40 border-2 mt-1  rounded-md">
-                  {categories.map((category: Category) => (
+                <ul className="bg-white overflow-y-auto  max-h-32 border-2 mt-1  rounded-md">
+                  {categories.map((category: Category, index: number) => (
                     <>
                       {category.name
                         .toLowerCase()
                         .includes(inputCategory.toLowerCase()) && (
                         <li
                           className="hover:bg-FirstColor cursor-pointer text-xs text-gray-500 hover:text-white p-1"
-                          key={category.id}
+                          key={index}
                           onClick={() =>
                             HandleSelectFilteredCategory(category.name)
                           }
@@ -115,58 +179,13 @@ export const Create_training = () => {
                 )
               )}
             </ul>
+            <ExerciseList
+              AddToTrainingTemplate={AddTrainingDetails}
+              filteredExercises={
+                filteredExercises.length > 0 ? filteredExercises : exercises
+              }
+            />
           </div>
-          <ul className=" grid grid-cols-1 sm:grid-cols-2    gap-2 justify-items-center  ">
-            {exercises.map((exercise: Exercise) => (
-              <li key={exercise.id}>
-                <div className="relative ">
-                  {exercise.video_link.startsWith("https://youtu.be/") ? (
-                    <img
-                      className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75"
-                      src={`https://img.youtube.com/vi/${exercise.video_link.substr(
-                        "https://youtu.be/".length
-                      )}/mqdefault.jpg`}
-                      alt={`Youtube video ${exercise.video_link.substr(
-                        "https://youtu.be/".length
-                      )}`}
-                    />
-                  ) : (
-                    <img
-                      className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75   "
-                      src={`https://img.youtube.com/vi/${
-                        exercise.video_link.split("v=")[1]
-                      }/mqdefault.jpg`}
-                      alt={`Youtube video ${
-                        exercise.video_link.split("v=")[1]
-                      }`}
-                    />
-                  )}
-                  <div className="absolute bg-FirstColor bg-opacity-50 rounded-lg px-1 left-2  top-1 flex items-center justify-center">
-                    <h2 className="text-white  text-sm font-bold">
-                      {exercise.name}
-                    </h2>
-                  </div>
-                  <div className="absolute bg-FirstColor  rounded-full px-2 right-2  top-1 flex items-center justify-center">
-                    <h2 className="text-white  text-sm font-bold cursor-pointer">
-                      Add +
-                    </h2>
-                  </div>
-                  <div className="absolute bottom-1 left-1">
-                    {exercise.categories.map((cat: any, index: number) => (
-                      <div
-                        key={index}
-                        className="inline-block mx-[2px] opacity-80  bg-FirstColor rounded-xl px-2 py-1"
-                      >
-                        <h2 className="text-white text-xs font-bold">
-                          {cat.name}
-                        </h2>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </div>
