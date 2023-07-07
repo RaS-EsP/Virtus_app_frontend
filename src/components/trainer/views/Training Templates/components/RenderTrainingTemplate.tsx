@@ -48,9 +48,7 @@ export const RenderTrainingTemplate = ({
                   <td className="px-6 py-4">{detail.rest}</td>
                   <td className="">
                     <button
-                      onClick={() =>
-                        RemoveFromTrainingDetails(detail.exercise_id)
-                      }
+                      onClick={() => RemoveFromTrainingDetails(index)}
                       className="rounded-full text-white  hover:scale-105 font-bold bg-FourthColor"
                     >
                       <CrossIcon />

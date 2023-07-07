@@ -31,7 +31,7 @@ export const Create_training = () => {
   >([]);
   const [filteredExercises, setFilteredExercises] = useState<Exercise[]>([]);
   const [TrainingDetails, setTrainingDetails] = useState<any[]>([]);
-  const AddTrainingDetails = (exercise: Exercise, index: number) => {
+  const AddTrainingDetails = (exercise: Exercise) => {
     const newExercise = {
       exercise_id: exercise.id,
       exercise_name: exercise.name,
@@ -44,10 +44,10 @@ export const Create_training = () => {
     };
     setTrainingDetails((prevExercises) => [...prevExercises, newExercise]);
   };
-  const RemoveFromTrainingDetails = (exercise_id: string) => {
-    setTrainingDetails((prevState) => [
-      ...prevState.filter((ex) => ex.exercise_id != exercise_id),
-    ]);
+  const RemoveFromTrainingDetails = (index: number) => {
+    const updateTrainingDetails = [...TrainingDetails];
+    updateTrainingDetails.splice(index, 1);
+    setTrainingDetails(updateTrainingDetails);
   };
   const HandleSelectFilteredCategory = (category: string) => {
     SetIsSelectCategoryOpen(false);
@@ -159,25 +159,23 @@ export const Create_training = () => {
           </div>
           <div className="my-1">
             <ul className="flex flex-wrap w-full justify-start items-center  ">
-              {ListOfCategoriesToFilter.map(
-                (category: string, index: number) => (
-                  <li
-                    className="h-5 flex items-center text-xs bg-FirstColor text-white px-2 py-1 rounded-lg m-1"
-                    key={index}
-                  >
-                    <div>
-                      {category}
-                      <span
-                        onClick={() => handleRemoveCat(category)}
-                        className="cursor-pointer"
-                      >
-                        {" "}
-                        &times;
-                      </span>
-                    </div>
-                  </li>
-                )
-              )}
+              {ListOfCategoriesToFilter.map((category: string, index: any) => (
+                <li
+                  className="h-5 flex items-center text-xs bg-FirstColor text-white px-2 py-1 rounded-lg m-1"
+                  key={index}
+                >
+                  <div>
+                    {category}
+                    <span
+                      onClick={() => handleRemoveCat(category)}
+                      className="cursor-pointer"
+                    >
+                      {" "}
+                      &times;
+                    </span>
+                  </div>
+                </li>
+              ))}
             </ul>
             <ExerciseList
               AddToTrainingTemplate={AddTrainingDetails}
