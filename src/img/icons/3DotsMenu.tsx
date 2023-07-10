@@ -4,7 +4,7 @@ export const DotsMenu = ({ onToggle, isOpen }: any) => {
   return (
     <>
       <svg
-        className="w-6 h-6 cursor-pointer"
+        className="w-4 h-4 cursor-pointer text-white"
         aria-hidden="true"
         fill="currentColor"
         viewBox="0 0 20 20"

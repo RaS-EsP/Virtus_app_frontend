@@ -1,5 +1,6 @@
 import React from "react";
 import { Exercise } from "../../../../../Interfaces";
+import { DotsMenu } from "../../../../../img/icons/3DotsMenu";
 
 export const ExerciseList = ({
   filteredExercises,
@@ -13,6 +14,7 @@ export const ExerciseList = ({
             <div className="relative ">
               {exercise.video_link.startsWith("https://youtu.be/") ? (
                 <img
+                  onClick={() => AddToTrainingTemplate(exercise, index)}
                   className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75"
                   src={`https://img.youtube.com/vi/${exercise.video_link.substr(
                     "https://youtu.be/".length
@@ -23,6 +25,7 @@ export const ExerciseList = ({
                 />
               ) : (
                 <img
+                  onClick={() => AddToTrainingTemplate(exercise, index)}
                   className="w-[320px] h-[180px] rounded-xl drop-shadow-lg cursor-pointer hover:brightness-75   "
                   src={`https://img.youtube.com/vi/${
                     exercise.video_link.split("v=")[1]
@@ -35,11 +38,8 @@ export const ExerciseList = ({
                   {exercise.name}
                 </h2>
               </div>
-              <div
-                onClick={() => AddToTrainingTemplate(exercise, index)}
-                className="absolute  cursor-pointer bg-FirstColor  rounded-full px-2 right-2  top-1 flex items-center justify-center"
-              >
-                <h2 className="text-white  text-sm font-bold">Add +</h2>
+              <div className="absolute  cursor-pointer bg-SecondColor  rounded-full px-2 right-2  top-1 ">
+                <DotsMenu />
               </div>
               <div className="absolute bottom-1 left-1">
                 {exercise.categories.map((cat: any, index: number) => (

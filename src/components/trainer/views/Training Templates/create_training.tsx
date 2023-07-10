@@ -76,6 +76,7 @@ export const Create_training = () => {
         <div className="w-full">
           <h2 className="font-bold    ">TRAINING TEMPLATE</h2>
           <RenderTrainingTemplate
+            setTrainingDetails={setTrainingDetails}
             TrainingDetails={TrainingDetails}
             RemoveFromTrainingDetails={RemoveFromTrainingDetails}
           />
