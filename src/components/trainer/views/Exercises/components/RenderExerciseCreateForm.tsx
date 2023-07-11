@@ -14,9 +14,7 @@ export const RenderExerciseCreateForm = ({
   inputForm,
   handleChangeForm,
   HandleSubmitForm,
-  setInputForm,
-  setSelected,
-  selected,
+
   setExercises,
   categories,
   ListOfFilteredAddCategories,

@@ -8,7 +8,7 @@ export const ExerciseList = ({
 }: any) => {
   return (
     <>
-      <ul className=" grid grid-cols-1 sm:grid-cols-2    gap-2 justify-items-center  ">
+      <ul className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1   lg:grid-cols-2   gap-2 justify-items-center  ">
         {filteredExercises.map((exercise: Exercise, index: number) => (
           <li key={index}>
             <div className="relative ">
@@ -34,7 +34,7 @@ export const ExerciseList = ({
                 />
               )}
               <div className="absolute bg-FirstColor bg-opacity-50 rounded-lg px-1 left-2  top-1 flex items-center justify-center">
-                <h2 className="text-white  text-sm font-bold">
+                <h2 className="text-white mr-10  text-sm font-bold">
                   {exercise.name}
                 </h2>
               </div>

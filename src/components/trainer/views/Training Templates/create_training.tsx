@@ -7,6 +7,7 @@ import { useFilterExercises } from "./hooks/filterExercises";
 import { ExerciseList } from "./components/ExerciseList";
 import { click } from "@testing-library/user-event/dist/click";
 import { RenderTrainingTemplate } from "./components/RenderTrainingTemplate";
+import { ReactTag } from "@headlessui/react/dist/types";
 
 export interface TrainingDetailsInTemplate {
   exercise_id: string;
@@ -25,6 +26,9 @@ export const Create_training = () => {
   const { categories } = useGetCategories();
   const [inputCategory, setInputCategory] = useState("");
   const [inputExercise, setInputExercise] = useState("");
+  const [NameTrainingTemplate, setNameTrainingTemplate] = useState<string>("");
+  const [DescriptionTrainingTemplate, setDescriptionTrainingTemplate] =
+    useState<string>("");
   const [IsSelectCategoryOpen, SetIsSelectCategoryOpen] = useState(false);
   const [ListOfCategoriesToFilter, setListOfCategoriesToFilter] = useState<
     string[]
@@ -62,6 +66,16 @@ export const Create_training = () => {
       ListOfCategoriesToFilter.filter((cat) => cat != category)
     );
   };
+  const SubmitTrainingTemplate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const trainingDetails = {
+      name: NameTrainingTemplate,
+      description: DescriptionTrainingTemplate,
+      trainingDetails: TrainingDetails,
+    };
+    console.log(trainingDetails);
+  };
 
   useFilterExercises({
     ListOfCategoriesToFilter,
@@ -72,17 +86,29 @@ export const Create_training = () => {
 
   return (
     <div className="flex flex-col md:flex-row m-5 py-5 drop-shadow-xl rounded-xl bg-white ">
-      <div className="w-full flex justify-center mb-5   md:w-1/2 md:border-r-2 px-5  ">
+      <div className="w-full flex justify-center mb-5   md:w-7/12 md:border-r-2 px-5  ">
         <div className="w-full">
-          <h2 className="font-bold    ">TRAINING TEMPLATE</h2>
-          <RenderTrainingTemplate
-            setTrainingDetails={setTrainingDetails}
-            TrainingDetails={TrainingDetails}
-            RemoveFromTrainingDetails={RemoveFromTrainingDetails}
-          />
+          <form onSubmit={(e) => SubmitTrainingTemplate(e)}>
+            <h2 className="font-bold relative   ">
+              TRAINING TEMPLATE
+              <button className="absolute right-0 text-sm bg-FirstColor duration-200 ease-in-out hover:bg-SecondColor rounded-xl px-2 py-1 text-white">
+                Save Training Template
+              </button>
+            </h2>
+            <RenderTrainingTemplate
+              NameTrainingTemplate={NameTrainingTemplate}
+              setNameTrainingTemplate={setNameTrainingTemplate}
+              setDescriptionTrainingTemplate={setDescriptionTrainingTemplate}
+              setTrainingDetails={setTrainingDetails}
+              TrainingDetails={TrainingDetails}
+              RemoveFromTrainingDetails={RemoveFromTrainingDetails}
+              DescriptionTrainingTemplate={DescriptionTrainingTemplate}
+            />
+          </form>
         </div>
       </div>
-      <div className="w-full md:w-1/2 flex justify-center   px-5">
+
+      <div className="w-full md:w-5/12 flex justify-center   px-5">
         <div className="w-full">
           <h2 className="font-bold ">EXERCISES</h2>
           <div className="relative ">

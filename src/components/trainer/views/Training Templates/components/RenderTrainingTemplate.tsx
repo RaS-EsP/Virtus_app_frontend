@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Reorder, motion } from "framer-motion";
 import { TrainingDetailsInTemplate } from "../create_training";
 import { CrossIcon } from "../../../../../img/icons/crossIcon";
@@ -7,9 +7,11 @@ export const RenderTrainingTemplate = ({
   TrainingDetails,
   RemoveFromTrainingDetails,
   setTrainingDetails,
+  NameTrainingTemplate,
+  setNameTrainingTemplate,
+  DescriptionTrainingTemplate,
+  setDescriptionTrainingTemplate,
 }: any) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const item = {
     hidden: { y: 20, opacity: 0 },
     visible: {
@@ -75,9 +77,42 @@ export const RenderTrainingTemplate = ({
 
   return (
     <>
-      <div className="relative rounded-xl mt-5 overflow-x-auto overflow-y-hidden">
-        <table className="w-full text-sm   text-gray-500 dark:text-gray-400">
-          <thead className="text-xs  text-gray-700 uppercase bg-FourthColor ">
+      <div className="flex mt-2 flex-col gap-1">
+        <div className="relative z-0  mb-6 group">
+          <input
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
+            type="text"
+            required
+            value={NameTrainingTemplate}
+            onChange={(e) => setNameTrainingTemplate(e.target.value)}
+            placeholder=""
+          />
+          <label
+            htmlFor="Search for a exercise"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-FirstColor peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Name for the training template
+          </label>
+        </div>
+        <div className="relative z-0  mb-2 group">
+          <textarea
+            className="peer h-full min-h-[100px] border-r-2 border-b-2 border-l-2 w-full resize-none rounded-[7px] bg-transparent px-3 py-2.5 font-sans text-sm font-normal  outline outline-0 transition-all placeholder-shown:border-2  placeholder-shown:border-t-gray-200 focus:border-2 focus:border-FirstColor focus:border-t-transparent focus:outline-0 disabled:resize-none disabled:border-0 disabled:bg-blue-gray-50"
+            value={DescriptionTrainingTemplate}
+            onChange={(e) => setDescriptionTrainingTemplate(e.target.value)}
+            name="description"
+            id="description"
+            required
+            placeholder=""
+          />
+          <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-FirstColor peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-FirstColor peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-FirstColor peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
+            Description
+          </label>
+        </div>
+      </div>
+
+      <div className="relative rounded-xl mt-2 overflow-x-auto overflow-y-hidden">
+        <table className="w-full text-xs   text-gray-500 ">
+          <thead className="  text-gray-700 uppercase bg-FourthColor ">
             <tr>
               <th scope="col" className="px-0 py-3  ">
                 Exercise
@@ -198,14 +233,16 @@ export const RenderTrainingTemplate = ({
               )}
             </Reorder.Group>
           ) : (
-            <tr>
-              <td
-                colSpan={7}
-                className="text-center font-bold text-xl text-gray-600"
-              >
-                Add exercise
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td
+                  colSpan={7}
+                  className="text-center font-bold text-xl text-gray-600"
+                >
+                  Add exercise
+                </td>
+              </tr>
+            </tbody>
           )}
         </table>
       </div>
