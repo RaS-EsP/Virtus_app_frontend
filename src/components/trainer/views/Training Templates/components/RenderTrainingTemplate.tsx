@@ -101,101 +101,112 @@ export const RenderTrainingTemplate = ({
             </tr>
           </thead>
 
-          <Reorder.Group
-            as="tbody"
-            values={TrainingDetails}
-            onReorder={setTrainingDetails}
-            axis="y"
-            variants={container}
-          >
-            {TrainingDetails.map(
-              (detail: TrainingDetailsInTemplate, index: number) => (
-                <Reorder.Item
-                  as="tr"
-                  key={detail.exercise_id}
-                  variants={item}
-                  initial="hidden"
-                  animate="visible"
-                  value={detail}
-                >
-                  <motion.td
-                    key={index}
-                    className="bg-white  text-center border-b px-6 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+          {TrainingDetails.length > 0 ? (
+            <Reorder.Group
+              as="tbody"
+              values={TrainingDetails}
+              onReorder={setTrainingDetails}
+              axis="y"
+              variants={container}
+            >
+              {TrainingDetails.map(
+                (detail: TrainingDetailsInTemplate, index: number) => (
+                  <Reorder.Item
+                    as="tr"
+                    key={detail.exercise_id}
+                    variants={item}
+                    initial="hidden"
+                    animate="visible"
+                    value={detail}
                   >
-                    {detail.exercise_name}
-                  </motion.td>
-                  <motion.td className="bg-white border-b px-6 py-4">
-                    <input
-                      type="number"
-                      required
-                      className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
-                      value={detail.sets}
-                      min={0}
-                      onChange={(e) =>
-                        handleInputTrainingDetails(e, index, "sets")
-                      }
-                    />
-                  </motion.td>
-                  <motion.td className="bg-white border-b px-6 py-4">
-                    <input
-                      name="repetitions" // Agrega este atributo
-                      className="px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
-                      min={0}
-                      value={detail.repetitions}
-                      onChange={(e) =>
-                        handleInputTrainingDetails(e, index, "repetitions")
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
-                    />
-                  </motion.td>
-                  <motion.td className="bg-white border-b px-6 py-4">
-                    <input
-                      name="rir" // Agrega este atributo
-                      className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
-                      value={detail.rir}
-                      min={0}
-                      onChange={(e) =>
-                        handleInputTrainingDetails(e, index, "rir")
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
-                    />
-                  </motion.td>
-                  <motion.td className="bg-white border-b px-6 py-4">
-                    <input
-                      name="weight" // Agrega este atributo
-                      className="  px-1 w-[62px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
-                      value={detail.weight}
-                      max={999}
-                      onChange={(e) =>
-                        handleInputTrainingDetails(e, index, "weight")
-                      }
-                      onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
-                    />
-                  </motion.td>
-                  <motion.td className="bg-white border-b px-6 py-4">
-                    <input
-                      className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
-                      value={detail.rest}
-                      type="number"
-                      required
-                      min={0}
-                      onChange={(e) =>
-                        handleInputTrainingDetails(e, index, "rest")
-                      }
-                    />
-                  </motion.td>
-                  <motion.td className="border-b">
-                    <button
-                      onClick={() => RemoveFromTrainingDetails(index)}
-                      className="rounded-full text-white  hover:scale-105 font-bold bg-FourthColor"
+                    <motion.td
+                      key={index}
+                      className="bg-white  text-center border-b px-6 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      <CrossIcon />
-                    </button>
-                  </motion.td>
-                </Reorder.Item>
-              )
-            )}
-          </Reorder.Group>
+                      {detail.exercise_name}
+                    </motion.td>
+                    <motion.td className="bg-white border-b px-6 py-4">
+                      <input
+                        type="number"
+                        required
+                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        value={detail.sets}
+                        min={0}
+                        onChange={(e) =>
+                          handleInputTrainingDetails(e, index, "sets")
+                        }
+                      />
+                    </motion.td>
+                    <motion.td className="bg-white border-b px-6 py-4">
+                      <input
+                        name="repetitions" // Agrega este atributo
+                        className="px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        min={0}
+                        value={detail.repetitions}
+                        onChange={(e) =>
+                          handleInputTrainingDetails(e, index, "repetitions")
+                        }
+                        onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
+                      />
+                    </motion.td>
+                    <motion.td className="bg-white border-b px-6 py-4">
+                      <input
+                        name="rir" // Agrega este atributo
+                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        value={detail.rir}
+                        min={0}
+                        onChange={(e) =>
+                          handleInputTrainingDetails(e, index, "rir")
+                        }
+                        onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
+                      />
+                    </motion.td>
+                    <motion.td className="bg-white border-b px-6 py-4">
+                      <input
+                        name="weight" // Agrega este atributo
+                        className="  px-1 w-[62px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        value={detail.weight}
+                        max={999}
+                        onChange={(e) =>
+                          handleInputTrainingDetails(e, index, "weight")
+                        }
+                        onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
+                      />
+                    </motion.td>
+                    <motion.td className="bg-white border-b px-6 py-4">
+                      <input
+                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        value={detail.rest}
+                        type="number"
+                        required
+                        min={0}
+                        onChange={(e) =>
+                          handleInputTrainingDetails(e, index, "rest")
+                        }
+                      />
+                    </motion.td>
+                    <motion.td className="border-b">
+                      <button
+                        onClick={() => RemoveFromTrainingDetails(index)}
+                        className="rounded-full text-white  hover:scale-105 font-bold bg-FourthColor"
+                      >
+                        <CrossIcon />
+                      </button>
+                    </motion.td>
+                  </Reorder.Item>
+                )
+              )}
+            </Reorder.Group>
+          ) : (
+            <tr>
+              <td
+                colSpan={7}
+                className="text-center font-bold text-xl text-gray-600"
+              >
+                Add exercise
+              </td>
+            </tr>
+          )}
         </table>
       </div>
     </>
