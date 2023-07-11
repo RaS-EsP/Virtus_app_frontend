@@ -26,7 +26,6 @@ export const RenderTrainingTemplate = ({
       },
     },
   };
-
   return (
     <>
       <div className="relative rounded-xl mt-5 overflow-x-auto overflow-y-hidden">

@@ -83,7 +83,7 @@ export const Create_training = () => {
         </div>
       </div>
       <div className="w-full md:w-1/2 flex justify-center   px-5">
-        <div>
+        <div className="w-full">
           <h2 className="font-bold ">EXERCISES</h2>
           <div className="relative ">
             <h3
@@ -96,7 +96,7 @@ export const Create_training = () => {
               Create exercise
             </button>
           </div>
-          <div className="flex flex-row gap-5 justify-between">
+          <div className="flex flex-row gap-5 w-full justify-between">
             <div className="relative z-0 w-1/2 mb-6 group">
               <input
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-FirstColor peer"
