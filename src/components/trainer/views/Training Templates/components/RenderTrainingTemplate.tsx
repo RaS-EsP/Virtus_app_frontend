@@ -231,7 +231,7 @@ export const RenderTrainingTemplate = ({
                       />
                     </motion.td>
 
-                    <motion.td className="border-b text-center my-2 ">
+                    <motion.td className="border-b text-center  ">
                       <button
                         onClick={() => RemoveFromTrainingDetails(index)}
                         className="rounded-full text-white  hover:scale-105 font-bold bg-FourthColor"
