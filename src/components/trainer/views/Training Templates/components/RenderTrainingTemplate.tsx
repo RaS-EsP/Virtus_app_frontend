@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import { Reorder, motion } from "framer-motion";
 import { TrainingDetailsInTemplate } from "../create_training";
 import { CrossIcon } from "../../../../../img/icons/crossIcon";
+import { Successmodal } from "../../Exercises/components/SucessModal";
 
 export const RenderTrainingTemplate = ({
+  handleNotesExercise,
   TrainingDetails,
   RemoveFromTrainingDetails,
   setTrainingDetails,
@@ -111,7 +113,7 @@ export const RenderTrainingTemplate = ({
       </div>
 
       <div className="relative rounded-xl mt-2 overflow-x-auto overflow-y-hidden">
-        <table className="w-full text-xs   text-gray-500 ">
+        <table className="w-full text-xs text-center  text-gray-500 ">
           <thead className="  text-gray-700 uppercase bg-FourthColor ">
             <tr>
               <th scope="col" className="px-0 py-3  ">
@@ -132,6 +134,7 @@ export const RenderTrainingTemplate = ({
               <th scope="col" className="px-0 py-3 ">
                 Rest
               </th>
+
               <th scope="col" className=""></th>
             </tr>
           </thead>
@@ -156,15 +159,22 @@ export const RenderTrainingTemplate = ({
                   >
                     <motion.td
                       key={index}
-                      className="bg-white  text-center border-b px-6 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white"
+                      className="bg-white  text-center my-2  border-b font-semibold text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {detail.exercise_name}
+                      <button
+                        onClick={(e) => handleNotesExercise(e, index)}
+                        className="text-FourthColor hover:text-ThirdColor duration-200 ease-in-out cursor-pointer text-2xl"
+                      >
+                        +
+                      </button>
                     </motion.td>
-                    <motion.td className="bg-white border-b px-6 py-4">
+
+                    <motion.td className="bg-white border-b ">
                       <input
                         type="number"
                         required
-                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        className="  px-1 w-[55px] text-center my-2  focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
                         value={detail.sets}
                         min={0}
                         onChange={(e) =>
@@ -172,10 +182,10 @@ export const RenderTrainingTemplate = ({
                         }
                       />
                     </motion.td>
-                    <motion.td className="bg-white border-b px-6 py-4">
+                    <motion.td className="bg-white border-b ">
                       <input
                         name="repetitions" // Agrega este atributo
-                        className="px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        className=" w-[55px] text-center my-2  focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
                         min={0}
                         value={detail.repetitions}
                         onChange={(e) =>
@@ -184,10 +194,10 @@ export const RenderTrainingTemplate = ({
                         onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
                       />
                     </motion.td>
-                    <motion.td className="bg-white border-b px-6 py-4">
+                    <motion.td className="bg-white border-b ">
                       <input
                         name="rir" // Agrega este atributo
-                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        className="   w-[55px] text-center my-2  focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
                         value={detail.rir}
                         min={0}
                         onChange={(e) =>
@@ -196,10 +206,10 @@ export const RenderTrainingTemplate = ({
                         onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
                       />
                     </motion.td>
-                    <motion.td className="bg-white border-b px-6 py-4">
+                    <motion.td className="bg-white border-b ">
                       <input
                         name="weight" // Agrega este atributo
-                        className="  px-1 w-[62px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        className="  px-1 w-[62px] text-center my-2  focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
                         value={detail.weight}
                         max={999}
                         onChange={(e) =>
@@ -208,9 +218,9 @@ export const RenderTrainingTemplate = ({
                         onKeyDown={(e) => handleKeyDown(e, index)} // Agrega este atributo
                       />
                     </motion.td>
-                    <motion.td className="bg-white border-b px-6 py-4">
+                    <motion.td className="bg-white border-b ">
                       <input
-                        className="  px-1 w-[55px] text-center focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
+                        className="  px-1 w-[55px] text-center my-2  focus:outline-none rounded-lg border-2 bg- focus:border-ThirdColor border-gray-200"
                         value={detail.rest}
                         type="number"
                         required
@@ -220,7 +230,8 @@ export const RenderTrainingTemplate = ({
                         }
                       />
                     </motion.td>
-                    <motion.td className="border-b">
+
+                    <motion.td className="border-b text-center my-2 ">
                       <button
                         onClick={() => RemoveFromTrainingDetails(index)}
                         className="rounded-full text-white  hover:scale-105 font-bold bg-FourthColor"
